@@ -54,7 +54,7 @@ class RunnerReader(object):
     def __init__(self, runs_directory):
         self.runs_directory = runs_directory
         self.runs_by_date = {}
-        self.grouped_weeks = construct_weeks(datetime.today) 
+        #self.grouped_weeks = construct_weeks(datetime.today)
         self._load_from_disk()
 
     def _load_from_disk(self):
@@ -81,15 +81,33 @@ class RunnerReader(object):
 
         x_vals = []
         y_vals = []
+        total_miles = 0
         for date, data_list in self.runs_by_date.items():
             total = 0
             for data in data_list:
                 total += float(data["miles"])
             x_vals.append(date)
             y_vals.append(total)
+            total_miles += total
+        title_string = "%f miles run" % total_miles
         import plotly.express as px
-        fig = px.bar(x=x_vals, y=y_vals)
+        fig = px.bar(x=x_vals, y=y_vals, title=title_string)
         fig.write_html('first_figure.html', auto_open=True)
+
+    def line_graph_all_runs(self):
+        x_vals = []
+        y_vals = []
+        total_miles = 0
+        for date, data_list in self.runs_by_date.items():
+            for data in data_list:
+                total_miles += float(data["miles"])
+            x_vals.append(date)
+            y_vals.append(total_miles)
+        title_string = "%f miles run" % total_miles
+        import plotly.express as px
+        fig = px.line(x=x_vals, y=y_vals, title=title_string)
+        fig.write_html('first_figure.html', auto_open=True)
+
 
     def print_stats(self):
         total_runs = 0
@@ -110,6 +128,7 @@ def main():
     parser.add_argument('--total', help='running totals')
     parser.add_argument('--print_all_runs', help='print the running files')
     parser.add_argument('--graph_all_runs', help='graph the running files')
+    parser.add_argument('--line_graph_all_runs', help='graph the running files as a line graph')
     parser.add_argument('--print_stats', help='print the stats')
     args = parser.parse_args()
 
@@ -119,6 +138,8 @@ def main():
         reader.print_all_runs()
     elif args.graph_all_runs:
         reader.graph_all_runs()
+    elif args.line_graph_all_runs:
+        reader.line_graph_all_runs()
     elif args.print_stats:
         reader.print_stats()
     else:
