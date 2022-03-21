@@ -73,9 +73,17 @@ class RunnerReader(object):
         return total
 
     def print_all_runs(self):
+        total_so_far = 0
+        goal = 1000
+        all_data = [('Date', 'Miles Run', 'Route Name', 'Total So Far', 'Percentage Of Goal')]
+        import pandas as pd
         for date, data_list in self.runs_by_date.items():
             for data in data_list:
-                print("%s -- %s miles" % (date, data["miles"]))
+                total_so_far += float(data["miles"])
+                percentage_of_goal = (total_so_far/goal) * 100
+                all_data.append((date, data['miles'], data['route_name'], total_so_far, percentage_of_goal))
+        df = pd.DataFrame(all_data)
+        print(df.to_string(index=False))
 
     def graph_all_runs(self):
 
@@ -112,14 +120,27 @@ class RunnerReader(object):
     def print_stats(self):
         total_runs = 0
         total_miles = 0
+        goal_number = 1000
+        day_of_year = datetime.now().timetuple().tm_yday
+        days_left = 365 - day_of_year
         for date, data_list in self.runs_by_date.items():
             for data in data_list:
                 total_runs += 1
                 total_miles += float(data["miles"])
+        miles_remaining = goal_number - total_miles
+        avg_miles_per_run = total_miles/total_runs
+        avg_runs_per_day = total_runs/day_of_year
+        avg_miles_per_day = total_miles/day_of_year
+        needed_avg = miles_remaining/days_left
+        print("Day of year: %d\n" % day_of_year)
+        print("Days left: %d\n" % days_left)
         print("Number of runs: %d\n" % total_runs)
         print("Number of miles: %f\n" % total_miles)
-        avg_miles_per_run = total_miles/total_runs
+        print("Number of miles remaining until goal: %f\n" % miles_remaining)
         print("Miles per run avg: %f\n" % avg_miles_per_run)
+        print("Runs per day avg: %f\n" % avg_runs_per_day)
+        print("Miles per day avg: %f\n" % avg_miles_per_day)
+        print("Miles per day avg (needed for goal): %f\n" % needed_avg)
 
 
 def main():
