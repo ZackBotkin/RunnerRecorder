@@ -21,6 +21,24 @@ weekday_mappings = {
     6 : 'sunday'
 }
 
+RECORD_RUN_ANSWERS = [
+    'record', 'record_run', 'record run'
+]
+
+ALL_RUNS_ANSWERS = [
+    'all', 'all_runs', 'list'
+]
+
+RUNNING_STAT_ANSWERS = [
+    'stats', 'running_stats'
+]
+
+DEFAULT_RUNS = [
+    'grand', 'roosevelt', 'lake', 'lakeshore', 'sedgewick', 'kingsbury'
+]
+
+LINE_START = ">>>" 
+
 def get_start_of_week(from_date, start_of_week='sunday'):
     weekday = weekday_mappings[from_date.weekday()]
     while weekday != start_of_week:
@@ -142,6 +160,47 @@ class RunnerReader(object):
         print("Miles per day avg: %f\n" % avg_miles_per_day)
         print("Miles per day avg (needed for goal): %f\n" % needed_avg)
 
+    def interactive_mode(self):
+        self.main_interactive_loop()
+
+    def main_interactive_loop(self):
+        print("%s Welcome to runner reader\n" % LINE_START)
+        answer = input("%s What are you doing\n" % LINE_START)
+        self.handle_answer_interactive(answer)
+        
+
+    def handle_answer_interactive(self, answer):
+        if answer in RECORD_RUN_ANSWERS:
+            self.record_run_interactive()
+        elif answer in ALL_RUNS_ANSWERS:
+            self.print_all_runs()
+        elif answer in RUNNING_STATS_ANSWERS:
+            self.print_stats()
+        else:
+            print("%s Unknown answer type. Please pick again \n" % LINE_START)
+
+    def record_run_interactive(self):
+        print("%s Good for you! Lets record a run!\n" % LINE_START)
+        answer = input("%s Which run? Type one of the defaults, or say \"new\" to enter a new one\n" % LINE_START)
+        if answer in DEFAULT_RUNS:
+            print("%s Recording %s run!\n" % (LINE_START, answer))
+        else:
+            print("%s Ok, lets record a new run!" % LINE_START)
+
+        done = False
+        while not done:
+            answer = input("%s Are you done?\n" % LINE_START)
+            if answer in ["Yes", "yes", "y"]:
+                return True
+            elif answer in ["No", "no", "n"]:
+                done = self.record_run_interactive()
+                return False
+            else:
+                print("%s Cmon man pick a real answer\n" % LINE_START)
+
+        return True
+                
+
 
 def main():
 
@@ -151,6 +210,7 @@ def main():
     parser.add_argument('--graph_all_runs', help='graph the running files')
     parser.add_argument('--line_graph_all_runs', help='graph the running files as a line graph')
     parser.add_argument('--print_stats', help='print the stats')
+    parser.add_argument('--interactive', help='interactive mode')
     args = parser.parse_args()
 
     DEFAULT_DIRECTORY="C:\\Users\\zackb\\Notes\\runs"
@@ -163,6 +223,8 @@ def main():
         reader.line_graph_all_runs()
     elif args.print_stats:
         reader.print_stats()
+    elif args.interactive:
+        reader.interactive_mode()
     else:
         total = reader.get_total()
         print("%f miles run" % total)
