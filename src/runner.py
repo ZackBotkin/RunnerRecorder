@@ -38,6 +38,7 @@ class RunnerReader(object):
                 all_data.append((date, data['miles'], data['route_name'], total_so_far, percentage_of_goal))
         df = pd.DataFrame(all_data)
         print(df.to_string(index=False))
+        return True
 
     def graph_all_runs(self):
 
@@ -55,6 +56,7 @@ class RunnerReader(object):
         import plotly.express as px
         fig = px.bar(x=x_vals, y=y_vals, title=title_string)
         fig.write_html('first_figure.html', auto_open=True)
+        return True
 
     def line_graph_all_runs(self):
         x_vals = []
@@ -69,6 +71,7 @@ class RunnerReader(object):
         import plotly.express as px
         fig = px.line(x=x_vals, y=y_vals, title=title_string)
         fig.write_html('first_figure.html', auto_open=True)
+        return True
 
 
     def print_stats(self):
@@ -95,3 +98,7 @@ class RunnerReader(object):
         print("Runs per day avg: %f\n" % avg_runs_per_day)
         print("Miles per day avg: %f\n" % avg_miles_per_day)
         print("Miles per day avg (needed for goal): %f\n" % needed_avg)
+        return True
+
+
+
