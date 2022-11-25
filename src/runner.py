@@ -3,6 +3,14 @@ import json
 import plotly
 from datetime import datetime
 
+MILE_MAP = {
+    "grand": 7.45,
+    "lake": 8.25,
+    "lakeshore": 6.1,
+    "sedgewick": 4.75,
+    "kingsbury": 3.5
+}
+
 class RunnerReader(object):
 
     def __init__(self, runs_directory):
@@ -12,6 +20,7 @@ class RunnerReader(object):
         self._load_from_disk()
 
     def _load_from_disk(self):
+        self.runs_by_date = {}
         for file in os.listdir(self.runs_directory):
             f = open("%s/%s" % (self.runs_directory, file))
             data = json.load(f)
@@ -73,7 +82,6 @@ class RunnerReader(object):
         fig.write_html('first_figure.html', auto_open=True)
         return True
 
-
     def print_stats(self):
         total_runs = 0
         total_miles = 0
@@ -100,5 +108,45 @@ class RunnerReader(object):
         print("Miles per day avg (needed for goal): %f\n" % needed_avg)
         return True
 
+    def todays_date_str(self):
+        todays_date = datetime.today()
+        date_str = "%s-%s-%s" % (
+            todays_date.year,
+            todays_date.month,
+            todays_date.day
+        )
+        return date_str
 
+    def todays_file_name(self, date_str=None):
+        return "%s/%s.json" % (
+            self.runs_directory,
+            date_str or self.todays_date_str()
+        )
 
+    ## TODO : need to add some code here so that
+    ## it doesn't overwrite stuff that is already there
+    def write_run_to_disk(self, route_name):
+        with open(self.todays_file_name(), 'w') as f:
+            if route_name not in MILE_MAP:
+                raise Exception("Unknown route!")
+            else:
+                miles = MILE_MAP[route_name]
+                json.dump({
+                    "miles": miles,
+                    "date": self.todays_date_str(),
+                    "route_name": route_name
+                }, f)
+                return
+
+    def write_new_run_to_disk(self, args):
+        if "miles" not in args:
+            raise Exception("Need \'miles\' as an arg")
+        if "route_name" not in args:
+            raise Exception("Need \'route_name\' as an arg")
+        with open(self.todays_file_name(date_str=args["date"]), "w") as f:
+            json.dump({
+                "miles": args["miles"],
+                "date": args["date"] or self.todays_date_str(),
+                "route_name": args["route_name"]
+            }, f)
+            return

@@ -1,4 +1,7 @@
+import json
 
+
+## TODO : put some of this stuff inside a config module of sorts
 LINE_START = ">>>" 
 
 MAIN_MENU_OPTIONS = ['record', 'all', 'stats', 'exit']
@@ -28,19 +31,26 @@ DEFAULT_RUN_OPTIONS = [
 ]
 DEFAULT_RUNS = '(' + ', '.join(DEFAULT_RUN_OPTIONS) + ')'
 
+def fancy_print(text):
+    print("%s %s" % (LINE_START, text))
+
+def fancy_input(text):
+    answer = input("%s %s" % (LINE_START, text))
+    return answer
+
 class InteractiveRunner(object):
 
     def __init__(self, runner):
         self.runner = runner
 
     def main_loop(self):
-        print("%s Welcome to runner reader\n" % LINE_START)
+        fancy_print("Welcome to runner reader\n")
         self.interactive_loop()
         
     def interactive_loop(self):
         return_result = False
         while not return_result:
-            answer = input("%s What do you want to do? %s\n" % (LINE_START, MAIN_MENU))
+            answer = fancy_input("What do you want to do? %s\n" % MAIN_MENU)
             if answer in RECORD_RUN_ANSWERS:
                 return_result = self.record_run_interactive()
             elif answer in ALL_RUNS_ANSWERS:
@@ -52,46 +62,57 @@ class InteractiveRunner(object):
             elif answer in EXIT_ANSWERS:
                 return_result = True
             else:
-                print("%s Unknown answer type. Please pick again \n" % LINE_START)
+                fancy_print("Unknown answer type. Please pick again\n")
 
             if return_result:
-                answer = input("%s Are you all done?\n" % LINE_START)
+                answer = fancy_input("Are you all done?\n")
                 if answer in ["Yes", "yes", "y"]:
                     return_result = True
                 else:
+                    self.runner._load_from_disk()
                     return_result = False
-        print("%s Bye bye" % LINE_START)
+        fancy_print("Bye bye")
 
     def record_run_interactive(self):
 
         done = False
-        print("%s Good for you! Lets record a run!\n" % LINE_START)
-        answer = input("%s Which run? Type one of the defaults, type \"new\" to enter a new run, or type \"show\" to show the defaults or \"exit\" to quit\n" % LINE_START)
+        fancy_print("Good for you! Lets record a run!\n")
+        answer = fancy_input("Which run? Type one of the defaults, type \"new\" to enter a new run, or type \"show\" to show the defaults or \"exit\" to quit\n")
         if answer in DEFAULT_RUN_OPTIONS:
-            print("%s Recording %s run!\n" % (LINE_START, answer))
+            fancy_print("Recording %s run!\n" % answer)
+            self.runner.write_run_to_disk(answer)
         elif answer in ['new', 'NEW', 'New']:
-            print("%s Ok, lets record a new run!" % LINE_START)
+            fancy_print("Ok, lets record a new run!")
+            self.record_new_run_interactive()
         elif answer in ['show', 'SHOW', 'Show']:
-            print('%s %s' % (LINE_START, DEFAULT_RUNS))
+            fancy_print(DEFAULT_RUNS)
         elif answer in EXIT_ANSWERS:
             done = True
         else:
-            print('%s Please pick an existing run, or say \"new\"' % LINE_START)
+            fancy_print('Please pick an existing run, or say \"new\"')
 
         while not done:
-            answer = input("%s Are you done?\n" % LINE_START)
+            answer = fancy_input("Are you done?\n")
             if answer in ["Yes", "yes", "y"]:
                 return True
             elif answer in ["No", "no", "n"]:
                 done = self.record_run_interactive()
                 return False
             else:
-                print("%s Cmon man pick a real answer\n" % LINE_START)
+                fancy_print("Cmon man pick a real answer\n")
 
         return True
 
-
-
+    def record_new_run_interactive(self):
+        route_name = fancy_input("What is the name of the new route?\n")
+        number_of_miles = fancy_input("What is the number of miles on this route?\n")
+        ## TODO : some validation of the inputted date
+        date_of_run = fancy_input("What is the date of the run? (just type ENTER for today)\n")
+        self.runner.write_new_run_to_disk({
+            "route_name": route_name,
+            "miles": number_of_miles,
+            "date": date_of_run
+        })
 
 
 
