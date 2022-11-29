@@ -2,6 +2,7 @@ import argparse
 from datetime import datetime, timedelta
 from src.runner import RunnerReader
 from src.interactive import InteractiveRunner
+from config.config import Configs
 
 
 class Week(object):
@@ -20,14 +21,12 @@ weekday_mappings = {
     6 : 'sunday'
 }
 
-
 def get_start_of_week(from_date, start_of_week='sunday'):
     weekday = weekday_mappings[from_date.weekday()]
     while weekday != start_of_week:
         from_date = from_date - timedelta(days=1)
         weekday = weekday_mappings[from_date.weekday()]
     return from_date
-
 
 def construct_weeks(from_date, start_of_week='sunday'):
 
@@ -48,8 +47,6 @@ def construct_weeks(from_date, start_of_week='sunday'):
 
     return by_weeks
 
-
-
 def main():
 
     parser = argparse.ArgumentParser(description= 'default parser')
@@ -58,11 +55,13 @@ def main():
     parser.add_argument('--graph_all_runs', help='graph the running files')
     parser.add_argument('--line_graph_all_runs', help='graph the running files as a line graph')
     parser.add_argument('--print_stats', help='print the stats')
+
+    ## TODO : fix this so that the mere presence of the flag is enough and a value does not need to be prorovided;
     parser.add_argument('--interactive', help='interactive mode')
+    parser.add_argument('--config_file', help='the configuration file')
     args = parser.parse_args()
 
-    DEFAULT_DIRECTORY="C:\\Users\\zackb\\Notes\\runs"
-    reader = RunnerReader(DEFAULT_DIRECTORY)
+    reader = RunnerReader(Configs(args.config_file))
 
     if args.print_all_runs:
         reader.print_all_runs()

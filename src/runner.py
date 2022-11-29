@@ -3,26 +3,18 @@ import json
 import plotly
 from datetime import datetime
 
-MILE_MAP = {
-    "grand": 7.45,
-    "lake": 8.25,
-    "lakeshore": 6.1,
-    "sedgewick": 4.75,
-    "kingsbury": 3.5
-}
-
 class RunnerReader(object):
 
-    def __init__(self, runs_directory):
-        self.runs_directory = runs_directory
+    def __init__(self, configs):
+        self.config = configs
         self.runs_by_date = {}
-        #self.grouped_weeks = construct_weeks(datetime.today)
         self._load_from_disk()
 
     def _load_from_disk(self):
         self.runs_by_date = {}
-        for file in os.listdir(self.runs_directory):
-            f = open("%s/%s" % (self.runs_directory, file))
+        runs_directory = self.config.get("runs_directory")
+        for file in os.listdir(runs_directory):
+            f = open("%s/%s" % (runs_directory, file))
             data = json.load(f)
             if data["date"] not in self.runs_by_date:
                 self.runs_by_date[data["date"]] = []
@@ -97,15 +89,17 @@ class RunnerReader(object):
         avg_runs_per_day = total_runs/day_of_year
         avg_miles_per_day = total_miles/day_of_year
         needed_avg = miles_remaining/days_left
-        print("Day of year: %d\n" % day_of_year)
-        print("Days left: %d\n" % days_left)
-        print("Number of runs: %d\n" % total_runs)
-        print("Number of miles: %f\n" % total_miles)
-        print("Number of miles remaining until goal: %f\n" % miles_remaining)
-        print("Miles per run avg: %f\n" % avg_miles_per_run)
-        print("Runs per day avg: %f\n" % avg_runs_per_day)
-        print("Miles per day avg: %f\n" % avg_miles_per_day)
-        print("Miles per day avg (needed for goal): %f\n" % needed_avg)
+        print("\n")
+        print("\tDay of year: %d\n" % day_of_year)
+        print("\tDays left: %d\n" % days_left)
+        print("\tNumber of runs: %d\n" % total_runs)
+        print("\tNumber of miles: %f\n" % total_miles)
+        print("\tNumber of miles remaining until goal: %f\n" % miles_remaining)
+        print("\tMiles per run avg: %f\n" % avg_miles_per_run)
+        print("\tRuns per day avg: %f\n" % avg_runs_per_day)
+        print("\tMiles per day avg: %f\n" % avg_miles_per_day)
+        print("\tMiles per day avg (needed for goal): %f\n" % needed_avg)
+        print("\n")
         return True
 
     def todays_date_str(self):
@@ -119,7 +113,7 @@ class RunnerReader(object):
 
     def todays_file_name(self, date_str=None):
         return "%s/%s.json" % (
-            self.runs_directory,
+            self.config.get("runs_directory"),
             date_str or self.todays_date_str()
         )
 
@@ -127,10 +121,11 @@ class RunnerReader(object):
     ## it doesn't overwrite stuff that is already there
     def write_run_to_disk(self, route_name):
         with open(self.todays_file_name(), 'w') as f:
-            if route_name not in MILE_MAP:
+            mile_map = self.config.get("mile_map")
+            if route_name not in mile_map:
                 raise Exception("Unknown route!")
             else:
-                miles = MILE_MAP[route_name]
+                miles = mile_map[route_name]
                 json.dump({
                     "miles": miles,
                     "date": self.todays_date_str(),
