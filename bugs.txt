@@ -1,0 +1,11 @@
+date format bug
+    - when creating a new file, need to have the format correct so that the runs line up correctly in all runs
+
+reload after making an update
+    - need to reload the  runs after making any updates
+
+need to say yes twice to leave the menu
+    - something weird, need to say "yes" twice or something
+
+expose "graph" as an option in the main menu
+    - do this

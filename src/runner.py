@@ -29,7 +29,7 @@ class RunnerReader(object):
 
     def print_all_runs(self):
         total_so_far = 0
-        goal = 1000
+        goal = self.config.get("run_goal")
         all_data = [('Date', 'Miles Run', 'Route Name', 'Total So Far', 'Percentage Of Goal')]
         import pandas as pd
         for date, data_list in self.runs_by_date.items():
@@ -77,7 +77,7 @@ class RunnerReader(object):
     def print_stats(self):
         total_runs = 0
         total_miles = 0
-        goal_number = 1000
+        goal_number = self.config.get("run_goal")
         day_of_year = datetime.now().timetuple().tm_yday
         days_left = 365 - day_of_year
         for date, data_list in self.runs_by_date.items():
