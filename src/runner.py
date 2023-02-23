@@ -103,13 +103,7 @@ class RunnerReader(object):
         return True
 
     def todays_date_str(self):
-        todays_date = datetime.today()
-        date_str = "%s-%s-%s" % (
-            todays_date.year,
-            todays_date.month,
-            todays_date.day
-        )
-        return date_str
+        return datetime.today().strftime("%Y-%m-%d")
 
     def todays_file_name(self, date_str=None):
         return "%s/%s.json" % (

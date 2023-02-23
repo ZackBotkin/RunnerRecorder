@@ -13,7 +13,9 @@ Coming soon
 
 TODO
 ----
-* packaging
-* write to database instead of json file
-* more types of graphs
 * bug fixes
+* write to database instead of json file
+* gracefully handle multiple runs per day
+* packaging
+* more types of graphs
+* option to save a "comment" along with a run (hot/cold, felt great, etc)
