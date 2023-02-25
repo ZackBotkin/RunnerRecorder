@@ -11,7 +11,7 @@ Running
 
 pip install <dependencies> ## this will be automated later
 
-PYTHONPATH=. python src/main.py --interactive --config_file <config path>
+PYTHONPATH=. python src/main.py --interactive --config_file (config path)
 
 
 Configuration
