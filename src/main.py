@@ -57,9 +57,10 @@ def main():
     parser.add_argument('--print_stats', action= "store_true", help='print the stats')
     parser.add_argument('--interactive', action= "store_true", help='interactive mode')
     parser.add_argument('--config_file', help='the configuration file')
+    parser.add_argument('--use_db', action= "store_true", help='use the sqlite datasource')
     args = parser.parse_args()
 
-    reader = RunnerReader(Configs(args.config_file))
+    reader = RunnerReader(Configs(args.config_file), args.use_db)
 
     if args.print_all_runs:
         reader.print_all_runs()

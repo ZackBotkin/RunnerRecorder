@@ -1,16 +1,24 @@
 import os
 import json
 import plotly
+import sqlite3
 from datetime import datetime
 
 class RunnerReader(object):
 
-    def __init__(self, configs):
+    def __init__(self, configs, use_db):
         self.config = configs
+        self.use_db = use_db
         self.runs_by_date = {}
-        self._load_from_disk()
+        self._load_runs()
 
-    def _load_from_disk(self):
+    def _load_runs(self):
+        if self.use_db:
+            self._load_runs_from_db()
+        else:
+            self._load_runs_from_disk()
+
+    def _load_runs_from_disk(self):
         self.runs_by_date = {}
         runs_directory = self.config.get("runs_directory")
         for file in os.listdir(runs_directory):
@@ -19,6 +27,23 @@ class RunnerReader(object):
             if data["date"] not in self.runs_by_date:
                 self.runs_by_date[data["date"]] = []
             self.runs_by_date[data["date"]].append(data)
+
+    def _load_runs_from_db(self):
+        self.runs_by_date = {}
+        conn = sqlite3.connect('tutorial.db')
+        query = conn.execute('SELECT * FROM runs')
+        results = query.fetchall()
+        for result in results:
+            _date = result[0]
+            _miles = result[1]
+            _route_name = result[2]
+            if _date not in self.runs_by_date:
+                self.runs_by_date[_date] = []
+            self.runs_by_date[_date].append({
+                'date': _date,
+                'miles': _miles,
+                'route_name': _route_name
+            })
 
     def get_total(self):
         total=0
@@ -139,3 +164,39 @@ class RunnerReader(object):
                 "route_name": args["route_name"]
             }, f)
             return
+
+    def create_table(self):
+        conn = sqlite3.connect('tutorial.db')
+        conn.execute("CREATE TABLE runs(date, miles, route_name)")
+        conn.commit()
+
+    def migrate_data(self):
+        conn = sqlite3.connect('tutorial.db')
+        query_str = "INSERT INTO runs VALUES "
+        for date, runs in self.runs_by_date.items():
+            for run in runs:
+                query_str += "('%s', %s, '%s'), " % (
+                    run['date'],
+                    run['miles'],
+                    run['route_name']
+                )
+        query_str = query_str.strip().rstrip(',')
+        conn.execute(query_str)
+        conn.commit()
+
+    def read_data(self):
+        conn = sqlite3.connect('tutorial.db')
+        query = conn.execute("SELECT * FROM runs")
+        results = query.fetchall()
+        for result in results:
+            print(result)
+
+    def delete_data(self):
+        conn = sqlite3.connect('tutorial.db')
+        conn.execute('DELETE FROM runs')
+        conn.commit()
+
+    def drop_table(self):
+        conn = sqlite3.connect('tutorial.db')
+        conn.execute('DROP TABLE runs')
+        conn.commit()

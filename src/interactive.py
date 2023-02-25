@@ -24,9 +24,11 @@ class InteractiveRunner(object):
         while not exit_result:
             answer = self.fancy_input("What do you want to do? %s\n" % self.main_menu)
 
+            answer = answer.strip()
+
             if answer in self.runner.config.get("record_run_answers"):
                 return_result = self.record_run_interactive()
-                self.runner._load_from_disk()
+                self.runner._load_runs()
                 exit_result = False
             elif answer in self.runner.config.get("all_run_answers"):
                 return_result = self.runner.print_all_runs()
@@ -36,6 +38,21 @@ class InteractiveRunner(object):
                 exit_result = False
             elif answer in self.runner.config.get("graph_answers"):
                 return_result = self.runner.graph_all_runs()
+                exit_result = False
+            elif answer in ["migrate", "migrate_data"]:
+                self.runner.migrate_data()
+                exit_result = False
+            elif answer == "create_table":
+                self.runner.create_table()
+                exit_result = False
+            elif answer in ["read_data", "table_data"]:
+                self.runner.read_data()
+                exit_result = False
+            elif answer == "delete_data":
+                self.runner.delete_data()
+                exit_result = False
+            elif answer == "drop_table":
+                self.runner.drop_table()
                 exit_result = False
             elif answer in self.runner.config.get("exit_answers"):
                 exit_result = True

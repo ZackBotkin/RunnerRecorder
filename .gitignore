@@ -1,3 +1,4 @@
 first_figure.html
 *.swp
 __pycache__*
+*.db
