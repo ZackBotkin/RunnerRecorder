@@ -24,9 +24,11 @@ An example can be found under "example_config"
 TODO
 ----
 * write to database instead of json file
+
 ** set up the database in configuration
 ** migrate all data over to the new database
 ** use the data in the database in the app
+
 * gracefully handle multiple runs per day
 * packaging
 * more types of graphs
