@@ -1,0 +1,20 @@
+{
+    "all_run_answers": ["all", "all_runs", "list"],
+    "default_run_options": ["grand", "roosevelt", "lake", "lakeshore", "sedgewick", "kingsbury"],
+    "exit_answers": ["exit", "done"],
+    "graph_answers": ["graph", "graphs"],
+    "line_start": ">>>",
+    "main_menu_options": ["record", "all", "stats", "graph", "exit"],
+    "mile_map": {
+        "grand": 7.45,
+        "lake": 8.25,
+        "lakeshore": 6.1,
+        "sedgewick": 4.75,
+        "kingsbury": 3.5,
+        "roosevelt": 10.73
+    },
+    "record_run_answers": ["record", "record_run", "record run"],
+    "runs_directory": "C:\\Users\\zackb\\Notes\\runs-tst-env",
+    "run_goal": 1100,
+    "running_stat_answers": ["stats", "running_stats"]
+}
