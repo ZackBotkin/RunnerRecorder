@@ -20,29 +20,28 @@ class InteractiveRunner(object):
         
     def interactive_loop(self):
         return_result = False
-        while not return_result:
+        exit_result = False
+        while not exit_result:
             answer = self.fancy_input("What do you want to do? %s\n" % self.main_menu)
 
             if answer in self.runner.config.get("record_run_answers"):
                 return_result = self.record_run_interactive()
+                self.runner._load_from_disk()
+                exit_result = False
             elif answer in self.runner.config.get("all_run_answers"):
                 return_result = self.runner.print_all_runs()
+                exit_result = False
             elif answer in self.runner.config.get("running_stat_answers"):
                 return_result = self.runner.print_stats()
+                exit_result = False
             elif answer in self.runner.config.get("graph_answers"):
                 return_result = self.runner.graph_all_runs()
+                exit_result = False
             elif answer in self.runner.config.get("exit_answers"):
-                return_result = True
+                exit_result = True
             else:
                 self.fancy_print("Unknown answer type. Please pick again\n")
 
-            if return_result:
-                answer = self.fancy_input("Are you all done?\n")
-                if answer in ["Yes", "yes", "y"]:
-                    return_result = True
-                else:
-                    self.runner._load_from_disk()
-                    return_result = False
 
         self.fancy_print("Bye bye")
 
@@ -65,7 +64,7 @@ class InteractiveRunner(object):
             self.fancy_print('Please pick an existing run, or say \"new\"')
 
         while not done:
-            answer = self.fancy_input("Are you done?\n")
+            answer = self.fancy_input("Are you done recording runs?\n")
             if answer in ["Yes", "yes", "y"]:
                 return True
             elif answer in ["No", "no", "n"]:

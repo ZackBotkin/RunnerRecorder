@@ -50,14 +50,12 @@ def construct_weeks(from_date, start_of_week='sunday'):
 def main():
 
     parser = argparse.ArgumentParser(description= 'default parser')
-    parser.add_argument('--total', help='running totals')
-    parser.add_argument('--print_all_runs', help='print the running files')
-    parser.add_argument('--graph_all_runs', help='graph the running files')
-    parser.add_argument('--line_graph_all_runs', help='graph the running files as a line graph')
-    parser.add_argument('--print_stats', help='print the stats')
-
-    ## TODO : fix this so that the mere presence of the flag is enough and a value does not need to be prorovided;
-    parser.add_argument('--interactive', help='interactive mode')
+    parser.add_argument('--total', action= "store_true", help='running totals')
+    parser.add_argument('--print_all_runs', action= "store_true", help='print the running files')
+    parser.add_argument('--graph_all_runs', action= "store_true", help='graph the running files')
+    parser.add_argument('--line_graph_all_runs', action= "store_true", help='graph the running files as a line graph')
+    parser.add_argument('--print_stats', action= "store_true", help='print the stats')
+    parser.add_argument('--interactive', action= "store_true", help='interactive mode')
     parser.add_argument('--config_file', help='the configuration file')
     args = parser.parse_args()
 

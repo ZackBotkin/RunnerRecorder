@@ -1,11 +1,1 @@
-reload after making an update
-    - need to reload the  runs after making any updates
 
-need to say yes twice to leave the menu
-    - something weird, need to say "yes" twice or something
-
-expose "graph" as an option in the main menu
-    - do this
-
-change things so that the presence of the flag is enough to launch in interactive mode
-    - currently it requires a value as well as the flag
