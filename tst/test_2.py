@@ -8,8 +8,7 @@ class Tests(unittest.TestCase):
     def setUp(self):
         configs = Configs("C:\\Users\\zackb\\configs\\tst-runner-reader.json")
 
-        use_db = False
-        self.reader = RunnerReader(configs, use_db)
+        self.reader = RunnerReader(configs)
         self.interactive = InteractiveRunner(self.reader)
 
     def test_one(self):

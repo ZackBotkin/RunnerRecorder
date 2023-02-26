@@ -42,6 +42,7 @@ class InteractiveRunner(object):
             elif answer in ["migrate", "migrate_data"]:
                 self.runner.migrate_data()
                 exit_result = False
+                self.runner._load_runs()
             elif answer == "create_table":
                 self.runner.create_table()
                 exit_result = False
@@ -51,6 +52,7 @@ class InteractiveRunner(object):
             elif answer == "delete_data":
                 self.runner.delete_data()
                 exit_result = False
+                self.runner._load_runs()
             elif answer == "drop_table":
                 self.runner.drop_table()
                 exit_result = False
@@ -69,7 +71,7 @@ class InteractiveRunner(object):
         answer = self.fancy_input("Which run? Type one of the defaults, type \"new\" to enter a new run, or type \"show\" to show the defaults or \"exit\" to quit\n")
         if answer in self.runner.config.get("default_run_options"):
             self.fancy_print("Recording %s run!\n" % answer)
-            self.runner.write_run_to_disk(answer)
+            self.runner.write_run(answer)
         elif answer in ['new', 'NEW', 'New']:
             self.fancy_print("Ok, lets record a new run!")
             self.record_new_run_interactive()
@@ -97,7 +99,7 @@ class InteractiveRunner(object):
         number_of_miles = self.fancy_input("What is the number of miles on this route?\n")
         ## TODO : some validation of the inputted date
         date_of_run = self.fancy_input("What is the date of the run? (just type ENTER for today)\n")
-        self.runner.write_new_run_to_disk({
+        self.runner.write_new_run({
             "route_name": route_name,
             "miles": number_of_miles,
             "date": date_of_run
