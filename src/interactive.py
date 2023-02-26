@@ -28,7 +28,7 @@ class InteractiveRunner(object):
 
             if answer in self.runner.config.get("record_run_answers"):
                 return_result = self.record_run_interactive()
-                self.runner._load_runs()
+                self.runner.reload()
                 exit_result = False
             elif answer in self.runner.config.get("all_run_answers"):
                 return_result = self.runner.print_all_runs()
@@ -44,7 +44,7 @@ class InteractiveRunner(object):
             elif answer in ["migrate", "migrate_data"]:
                 self.runner.migrate_data()
                 exit_result = False
-                self.runner._load_runs()
+                self.runner.reload()
             elif answer == "create_table":
                 self.runner.create_table()
                 exit_result = False
@@ -54,7 +54,7 @@ class InteractiveRunner(object):
             elif answer == "delete_data":
                 self.runner.delete_data()
                 exit_result = False
-                self.runner._load_runs()
+                self.runner.reload()
             elif answer == "drop_table":
                 self.runner.drop_table()
                 exit_result = False

@@ -1,61 +1,40 @@
-import os
-import json
 import plotly
-import sqlite3
 from datetime import datetime
+from src.reader_writer import ReaderWriter
 
 class RunnerReader(object):
 
+    ## TODO : possibly pass in a reader writer so that we dont
+    ## need to expose all of these methods
+
     def __init__(self, configs):
         self.config = configs
+        self.reader_writer = ReaderWriter(configs)
+        self.runs_by_date = self.reader_writer.get_runs()
 
+    def reload(self):
+        self.runs_by_date = self.reader_writer.get_runs()
 
-        if self.config.get("read_from_db") and self.config.get("read_from_disk"):
-            raise Exception("Cannot read from both datasources, update the config file to set either \"read_from_db\" or \"read_from_disk\" to false")
-        elif not self.config.get("read_from_db") and not self.config.get("read_from_disk"):
-            raise Exception("Need to select a datasource to read from, update the config file to set either \"read_from_db\" or \"read_from_disk\" to true")
-        else:
-            self.use_db = self.config.get("read_from_db")
+    def write_run(self, route_name):
+        self.reader_writer.write_run(route_name)
 
-        self.runs_by_date = {}
-        self.database_file_name = "%s\\%s.db" % (
-            self.config.get("database_directory"),
-            self.config.get("database_name")
-        )
-        self._load_runs()
+    def write_new_run(self, args):
+        self.reader_writer.write_new_run(args)
 
-    def _load_runs(self):
-        if self.use_db:
-            self._load_runs_from_db()
-        else:
-            self._load_runs_from_disk()
+    def create_table(self):
+        self.reader_writer.create_table()
 
-    def _load_runs_from_disk(self):
-        self.runs_by_date = {}
-        runs_directory = self.config.get("runs_directory")
-        for file in os.listdir(runs_directory):
-            f = open("%s/%s" % (runs_directory, file))
-            data = json.load(f)
-            if data["date"] not in self.runs_by_date:
-                self.runs_by_date[data["date"]] = []
-            self.runs_by_date[data["date"]].append(data)
+    def migrate_data(self):
+        self.reader_writer.migrate_data(self.runs_by_date)
 
-    def _load_runs_from_db(self):
-        self.runs_by_date = {}
-        conn = sqlite3.connect(self.database_file_name)
-        query = conn.execute('SELECT * FROM runs')
-        results = query.fetchall()
-        for result in results:
-            _date = result[0]
-            _miles = result[1]
-            _route_name = result[2]
-            if _date not in self.runs_by_date:
-                self.runs_by_date[_date] = []
-            self.runs_by_date[_date].append({
-                'date': _date,
-                'miles': _miles,
-                'route_name': _route_name
-            })
+    def read_data(self):
+        self.reader_writer.read_data()
+
+    def delete_data(self):
+        self.reader_writer.delete_data()
+
+    def drop_table(self):
+        self.reader_writer.drop_table()
 
     def get_total(self):
         total=0
@@ -122,7 +101,10 @@ class RunnerReader(object):
                 total_runs += 1
                 total_miles += float(data["miles"])
         miles_remaining = goal_number - total_miles
-        avg_miles_per_run = total_miles/total_runs
+        if total_runs == 0:
+            avg_miles_per_run = 0
+        else:
+            avg_miles_per_run = total_miles/total_runs
         avg_runs_per_day = total_runs/day_of_year
         avg_miles_per_day = total_miles/day_of_year
         needed_avg = miles_remaining/days_left
@@ -138,110 +120,3 @@ class RunnerReader(object):
         print("\tMiles per day avg (needed for goal): %f\n" % needed_avg)
         print("\n")
         return True
-
-
-    def write_run(self, route_name):
-        if self.config.get("write_to_disk"):
-            self.write_run_to_disk(route_name)
-        if self.config.get("write_to_db"):
-            self.write_run_to_db(route_name)
-
-    def write_new_run(self, args):
-        if self.config.get("write_to_disk"):
-            self.write_new_run_to_disk(args)
-        if self.config.get("write_to_db"):
-            self.write_new_run_to_db(args)
-
-    def todays_date_str(self):
-        return datetime.today().strftime("%Y-%m-%d")
-
-    def todays_file_name(self, date_str=None):
-        return "%s/%s.json" % (
-            self.config.get("runs_directory"),
-            date_str or self.todays_date_str()
-        )
-
-    ## TODO : need to add some code here so that
-    ## it doesn't overwrite stuff that is already there
-    def write_run_to_disk(self, route_name):
-        with open(self.todays_file_name(), 'w') as f:
-            mile_map = self.config.get("mile_map")
-            if route_name not in mile_map:
-                raise Exception("Unknown route!")
-            else:
-                miles = mile_map[route_name]
-                json.dump({
-                    "miles": miles,
-                    "date": self.todays_date_str(),
-                    "route_name": route_name
-                }, f)
-                return
-
-    def write_new_run_to_disk(self, args):
-        if "miles" not in args:
-            raise Exception("Need \'miles\' as an arg")
-        if "route_name" not in args:
-            raise Exception("Need \'route_name\' as an arg")
-        with open(self.todays_file_name(date_str=args["date"]), "w") as f:
-            json.dump({
-                "miles": args["miles"],
-                "date": args["date"] or self.todays_date_str(),
-                "route_name": args["route_name"]
-            }, f)
-            return
-
-    def write_run_to_db(self, route_name):
-        mile_map = self.config.get("mile_map")
-        if route_name not in mile_map:
-            raise Exception("Unknown route!")
-        else:
-            miles = mile_map[route_name]
-            _date = self.todays_date_str()
-            conn = sqlite3.connect(self.database_file_name)
-            query_str = "INSERT INTO runs VALUES "
-            query_str += "('%s', %s, '%s')" % (
-                _date,
-                miles,
-                route_name
-            )
-            conn.execute(query_str)
-            conn.commit()
-
-    def write_new_run_to_db(self, args):
-        raise Exception("Not implemented yet")
-
-    def create_table(self):
-        conn = sqlite3.connect(self.database_file_name)
-        conn.execute("CREATE TABLE runs(date, miles, route_name)")
-        conn.commit()
-
-    def migrate_data(self):
-        conn = sqlite3.connect(self.database_file_name)
-        query_str = "INSERT INTO runs VALUES "
-        for date, runs in self.runs_by_date.items():
-            for run in runs:
-                query_str += "('%s', %s, '%s'), " % (
-                    run['date'],
-                    run['miles'],
-                    run['route_name']
-                )
-        query_str = query_str.strip().rstrip(',')
-        conn.execute(query_str)
-        conn.commit()
-
-    def read_data(self):
-        conn = sqlite3.connect(self.database_file_name)
-        query = conn.execute("SELECT * FROM runs")
-        results = query.fetchall()
-        for result in results:
-            print(result)
-
-    def delete_data(self):
-        conn = sqlite3.connect(self.database_file_name)
-        conn.execute('DELETE FROM runs')
-        conn.commit()
-
-    def drop_table(self):
-        conn = sqlite3.connect(self.database_file_name)
-        conn.execute('DROP TABLE runs')
-        conn.commit()
