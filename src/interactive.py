@@ -39,6 +39,8 @@ class InteractiveRunner(object):
             elif answer in self.runner.config.get("graph_answers"):
                 return_result = self.runner.graph_all_runs()
                 exit_result = False
+
+            ## Temporary methods while I am migrating data around
             elif answer in ["migrate", "migrate_data"]:
                 self.runner.migrate_data()
                 exit_result = False
@@ -46,7 +48,7 @@ class InteractiveRunner(object):
             elif answer == "create_table":
                 self.runner.create_table()
                 exit_result = False
-            elif answer in ["read_data", "table_data"]:
+            elif answer in ["read_data", "table_data", "db_data"]:
                 self.runner.read_data()
                 exit_result = False
             elif answer == "delete_data":
@@ -56,6 +58,8 @@ class InteractiveRunner(object):
             elif answer == "drop_table":
                 self.runner.drop_table()
                 exit_result = False
+
+
             elif answer in self.runner.config.get("exit_answers"):
                 exit_result = True
             else:
@@ -105,6 +109,3 @@ class InteractiveRunner(object):
             "date": date_of_run
         })
         return True
-
-
-

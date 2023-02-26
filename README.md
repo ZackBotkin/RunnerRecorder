@@ -9,6 +9,8 @@ Coming soon
 Running
 -------
 
+install python
+
 pip install <dependencies> ## this will be automated later
 
 PYTHONPATH=. python src/main.py --interactive --config_file (config path)
@@ -25,11 +27,13 @@ TODO
 ----
 * write to database instead of json file
 
-** set up the database in configuration
 ** migrate all data over to the new database
 ** use the data in the database in the app
 
 * gracefully handle multiple runs per day
+
+** this will be fixed by using the database
+
 * packaging
 * more types of graphs
 * option to save a "comment" along with a run (hot/cold, felt great, etc)
