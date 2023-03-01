@@ -59,7 +59,6 @@ class InteractiveRunner(object):
                 self.runner.drop_table()
                 exit_result = False
 
-
             elif answer in self.runner.config.get("exit_answers"):
                 exit_result = True
             else:

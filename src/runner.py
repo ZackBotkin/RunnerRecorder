@@ -1,15 +1,11 @@
 import plotly
 from datetime import datetime
-from src.reader_writer import ReaderWriter
 
 class RunnerReader(object):
 
-    ## TODO : possibly pass in a reader writer so that we dont
-    ## need to expose all of these methods
-
-    def __init__(self, configs):
+    def __init__(self, configs, reader_writer):
         self.config = configs
-        self.reader_writer = ReaderWriter(configs)
+        self.reader_writer = reader_writer
         self.runs_by_date = self.reader_writer.get_runs()
 
     def reload(self):
@@ -102,7 +98,7 @@ class RunnerReader(object):
         fig.write_html('first_figure.html', auto_open=True)
         return True
 
-    def print_stats(self):
+    def get_stats(self):
         total_runs = 0
         total_miles = 0
         goal_number = self.config.get("run_goal")
@@ -120,15 +116,29 @@ class RunnerReader(object):
         avg_runs_per_day = total_runs/day_of_year
         avg_miles_per_day = total_miles/day_of_year
         needed_avg = miles_remaining/days_left
+        return {
+            "day_of_year": day_of_year,
+            "days_left": days_left,
+            "total_runs": total_runs,
+            "total_miles": total_miles,
+            "miles_remaining": miles_remaining,
+            "avg_miles_per_run": avg_miles_per_run,
+            "avg_runs_per_day": avg_runs_per_day,
+            "avg_miles_per_day": avg_miles_per_day,
+            "needed_avg": needed_avg
+        }
+
+    def print_stats(self):
+        stats = self.get_stats()
         print("\n")
-        print("\tDay of year: %d\n" % day_of_year)
-        print("\tDays left: %d\n" % days_left)
-        print("\tNumber of runs: %d\n" % total_runs)
-        print("\tNumber of miles: %f\n" % total_miles)
-        print("\tNumber of miles remaining until goal: %f\n" % miles_remaining)
-        print("\tMiles per run avg: %f\n" % avg_miles_per_run)
-        print("\tRuns per day avg: %f\n" % avg_runs_per_day)
-        print("\tMiles per day avg: %f\n" % avg_miles_per_day)
-        print("\tMiles per day avg (needed for goal): %f\n" % needed_avg)
+        print("\tDay of year: %d\n" % stats["day_of_year"])
+        print("\tDays left: %d\n" % stats["days_left"])
+        print("\tNumber of runs: %d\n" % stats["total_runs"])
+        print("\tNumber of miles: %f\n" % stats["total_miles"])
+        print("\tNumber of miles remaining until goal: %f\n" % stats["miles_remaining"])
+        print("\tMiles per run avg: %f\n" % stats["avg_miles_per_run"])
+        print("\tRuns per day avg: %f\n" % stats["avg_runs_per_day"])
+        print("\tMiles per day avg: %f\n" % stats["avg_miles_per_day"])
+        print("\tMiles per day avg (needed for goal): %f\n" % stats["needed_avg"])
         print("\n")
         return True

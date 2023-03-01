@@ -2,6 +2,7 @@ import argparse
 from datetime import datetime, timedelta
 from src.runner import RunnerReader
 from src.interactive import InteractiveRunner
+from src.reader_writer import ReaderWriter
 from config.config import Configs
 
 
@@ -59,7 +60,9 @@ def main():
     parser.add_argument('--config_file', help='the configuration file')
     args = parser.parse_args()
 
-    reader = RunnerReader(Configs(args.config_file))
+    configs = Configs(args.config_file)
+    reader_writer = ReaderWriter(configs)
+    reader = RunnerReader(configs, reader_writer)
 
     if args.print_all_runs:
         reader.print_all_runs()

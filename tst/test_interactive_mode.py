@@ -1,6 +1,7 @@
 import unittest
 from src.interactive import InteractiveRunner
 from src.runner import RunnerReader
+from src.reader_writer import ReaderWriter
 from config.config import Configs
 
 class Tests(unittest.TestCase):
@@ -8,7 +9,8 @@ class Tests(unittest.TestCase):
     def setUp(self):
         configs = Configs("C:\\Users\\zackb\\configs\\tst-runner-reader.json")
 
-        self.reader = RunnerReader(configs)
+        reader_writer = ReaderWriter(configs)
+        self.reader = RunnerReader(configs, reader_writer)
         self.interactive = InteractiveRunner(self.reader)
 
     def test_one(self):
