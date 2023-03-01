@@ -15,11 +15,11 @@ class RunnerReader(object):
     def reload(self):
         self.runs_by_date = self.reader_writer.get_runs()
 
-    def write_run(self, route_name):
-        self.reader_writer.write_run(route_name)
+    def write_run(self, route_name, comment=None):
+        self.reader_writer.write_run(route_name, comment)
 
-    def write_new_run(self, args):
-        self.reader_writer.write_new_run(args)
+    def write_new_run(self, args, comment=None):
+        self.reader_writer.write_new_run(args, comment)
 
     def create_table(self):
         self.reader_writer.create_table()
@@ -46,13 +46,25 @@ class RunnerReader(object):
     def print_all_runs(self):
         total_so_far = 0
         goal = self.config.get("run_goal")
-        all_data = [('Date', 'Miles Run', 'Route Name', 'Total So Far', 'Percentage Of Goal')]
+        all_data = [('Date', 'Miles Run', 'Route Name', 'Total So Far', 'Percentage Of Goal', 'Comment')]
         import pandas as pd
         for date, data_list in self.runs_by_date.items():
             for data in data_list:
                 total_so_far += float(data["miles"])
                 percentage_of_goal = (total_so_far/goal) * 100
-                all_data.append((date, data['miles'], data['route_name'], total_so_far, percentage_of_goal))
+                comment = ""
+                if "comment" in data:
+                    comment = data["comment"]
+                all_data.append(
+                    (
+                        date,
+                        data['miles'],
+                        data['route_name'],
+                        total_so_far,
+                        percentage_of_goal,
+                        comment
+                    )
+                )
         df = pd.DataFrame(all_data)
         print(df.to_string(index=False))
         return True

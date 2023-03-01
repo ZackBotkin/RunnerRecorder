@@ -74,8 +74,9 @@ class InteractiveRunner(object):
         self.fancy_print("Good for you! Lets record a run!\n")
         answer = self.fancy_input("Which run? Type one of the defaults, type \"new\" to enter a new run, or type \"show\" to show the defaults or \"exit\" to quit\n")
         if answer in self.runner.config.get("default_run_options"):
+            comment = self.get_comment_interactive()
             self.fancy_print("Recording %s run!\n" % answer)
-            self.runner.write_run(answer)
+            self.runner.write_run(answer, comment)
         elif answer in ['new', 'NEW', 'New']:
             self.fancy_print("Ok, lets record a new run!")
             self.record_new_run_interactive()
@@ -109,3 +110,16 @@ class InteractiveRunner(object):
             "date": date_of_run
         })
         return True
+
+    def get_comment_interactive(self):
+
+        answer = self.fancy_input("Comment on this run? Just hit enter to proceed without a comment\n")
+
+        if answer == "":
+            return None
+        else:
+            return answer
+
+
+
+

@@ -45,12 +45,16 @@ class ReaderWriter(object):
             _date = result[0]
             _miles = result[1]
             _route_name = result[2]
+            _comment = result[3]
+            if _comment is None:
+                _comment = ""
             if _date not in runs_by_date:
                 runs_by_date[_date] = []
             runs_by_date[_date].append({
                 'date': _date,
                 'miles': _miles,
-                'route_name': _route_name
+                'route_name': _route_name,
+                'comment': _comment
             })
         return runs_by_date
 
@@ -65,29 +69,32 @@ class ReaderWriter(object):
             runs_by_date[data["date"]].append(data)
         return runs_by_date
 
-    def write_run(self, route_name):
+    def write_run(self, route_name, comment=None):
         if self.config.get("write_to_disk"):
-            self.write_run_to_disk(route_name)
+            self.write_run_to_disk(route_name, comment)
         if self.config.get("write_to_db"):
-            self.write_run_to_db(route_name)
+            self.write_run_to_db(route_name, comment)
 
-    def write_new_run(self, args):
+    def write_new_run(self, args, comment=None):
         if self.config.get("write_to_disk"):
             self.write_new_run_to_disk(args)
         if self.config.get("write_to_db"):
-            self.write_new_run_to_db(args)
+            self.write_new_run_to_db(args, comment)
 
-    def write_run_to_disk(self, route_name):
+    def write_run_to_disk(self, route_name, comment=None):
         with open(self.todays_file_name(), 'w') as f:
             mile_map = self.config.get("mile_map")
             if route_name not in mile_map:
                 raise Exception("Unknown route!")
             else:
                 miles = mile_map[route_name]
+                if comment is None:
+                    comment = ''
                 json.dump({
                     "miles": miles,
                     "date": self.todays_date_str(),
-                    "route_name": route_name
+                    "route_name": route_name,
+                    "comment": comment
                 }, f)
                 return
 
@@ -97,27 +104,43 @@ class ReaderWriter(object):
         if "route_name" not in args:
             raise Exception("Need \'route_name\' as an arg")
         with open(self.todays_file_name(date_str=args["date"]), "w") as f:
+            comment = ''
+            if 'comment' in args:
+                comment = args['comment']
+
             json.dump({
                 "miles": args["miles"],
                 "date": args["date"] or self.todays_date_str(),
-                "route_name": args["route_name"]
+                "route_name": args["route_name"],
+                "comment": comment
             }, f)
             return
 
-    def write_run_to_db(self, route_name):
+    def write_run_to_db(self, route_name, comment=None):
         mile_map = self.config.get("mile_map")
         if route_name not in mile_map:
             raise Exception("Unknown route!")
         else:
+
             miles = mile_map[route_name]
             _date = self.todays_date_str()
             conn = sqlite3.connect(self.database_file_name)
             query_str = "INSERT INTO runs VALUES "
-            query_str += "('%s', %s, '%s')" % (
-                _date,
-                miles,
-                route_name
-            )
+
+            if comment == None:
+                query_str += "('%s', %s, '%s', '')" % (
+                    _date,
+                    miles,
+                    route_name,
+                )
+            else:
+                query_str += "('%s', %s, '%s', '%s')" % (
+                    _date,
+                    miles,
+                    route_name,
+                    comment
+                )
+
             conn.execute(query_str)
             conn.commit()
 
@@ -127,7 +150,7 @@ class ReaderWriter(object):
 
     def create_table(self):
         conn = sqlite3.connect(self.database_file_name)
-        conn.execute("CREATE TABLE runs(date, miles, route_name)")
+        conn.execute("CREATE TABLE runs(date, miles, route_name, comment)")
         conn.commit()
 
     def migrate_data(self, runs_by_date):
@@ -135,11 +158,20 @@ class ReaderWriter(object):
         query_str = "INSERT INTO runs VALUES "
         for date, runs in runs_by_date.items():
             for run in runs:
-                query_str += "('%s', %s, '%s'), " % (
-                    run['date'],
-                    run['miles'],
-                    run['route_name']
-                )
+
+                if 'comment' in run:
+                    query_str += "('%s', %s, '%s'), " % (
+                        run['date'],
+                        run['miles'],
+                        run['route_name'],
+                        run['comment']
+                    )
+                else:
+                    query_str += "('%s', %s, '%s', ''), " % (
+                        run['date'],
+                        run['miles'],
+                        run['route_name']
+                    )
         query_str = query_str.strip().rstrip(',')
         conn.execute(query_str)
         conn.commit()
