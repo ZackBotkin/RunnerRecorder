@@ -21,6 +21,15 @@ class ReaderWriter(object):
             self.config.get("database_name")
         )
 
+        ## attempt to create the table
+        if self.config.get("create_table_upon_start"):
+            try:
+                self.create_table()
+            ## ignore if the table already exists
+            except sqlite3.OperationalError:
+                pass
+
+
     def todays_date_str(self):
         return datetime.today().strftime("%Y-%m-%d")
 
