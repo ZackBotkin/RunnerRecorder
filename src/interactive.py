@@ -39,6 +39,9 @@ class InteractiveRunner(object):
             elif answer in self.runner.config.get("graph_answers"):
                 return_result = self.graph_run_interactive()
                 exit_result = False
+            elif answer in self.runner.config.get("route_answers"):
+                return_result = self.routes_interactive()
+                exit_result = False
 
             ## Temporary methods while I am migrating data around
             elif answer in ["migrate", "migrate_data"]:
@@ -132,5 +135,10 @@ class InteractiveRunner(object):
             self.runner.line_graph_all_runs()
 
         return True
+
+    ## right now this just prints, but this will be the entry
+    ## point for adding routes and stuff like that
+    def routes_interactive(self):
+        self.runner.print_all_routes()
 
 

@@ -24,7 +24,8 @@ class ReaderWriter(object):
         ## attempt to create the table
         if self.config.get("create_table_upon_start"):
             try:
-                self.create_table()
+                self.create_runs_table()
+                self.create_routes_table()
             ## ignore if the table already exists
             except sqlite3.OperationalError:
                 pass
@@ -157,10 +158,16 @@ class ReaderWriter(object):
         raise Exception("Not implemented yet")
 
 
-    def create_table(self):
+    def create_runs_table(self):
         conn = sqlite3.connect(self.database_file_name)
         conn.execute("CREATE TABLE runs(date, miles, route_name, comment)")
         conn.commit()
+
+    def create_routes_table(self):
+        conn = sqlite3.connect(self.database_file_name)
+        conn.execute("CREATE TABLE routes(route_name, miles, description")
+        conn.commit()
+
 
     def migrate_data(self, runs_by_date):
         conn = sqlite3.connect(self.database_file_name)

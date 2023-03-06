@@ -65,6 +65,18 @@ class RunnerReader(object):
         print(df.to_string(index=False))
         return True
 
+    def print_all_routes(self):
+
+        ## TODO : get this from the database
+        routes = self.config.get('mile_map')
+        all_data = [('Route Name', 'Distance')]
+        import pandas as pd
+        for route_name, miles in routes.items():
+            all_data.append((route_name, "%f miles" % miles))
+        df = pd.DataFrame(all_data)
+        print(df.to_string(index=False))
+        return True
+
     def graph_all_runs(self):
 
         x_vals = []
