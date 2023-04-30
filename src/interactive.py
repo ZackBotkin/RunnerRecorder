@@ -55,13 +55,16 @@ class InteractiveRunner(object):
                 self.runner.read_data()
                 exit_result = False
             elif answer == "delete_data":
-                self.runner.delete_data()
+                #self.runner.delete_data()
                 exit_result = False
                 self.runner.reload()
             elif answer == "drop_table":
-                self.runner.drop_table()
+                #self.runner.drop_table()
                 exit_result = False
-
+            elif answer == "sql":
+                self.runner.run_sql()
+                self.runner.reload()
+                exit_result = False
             elif answer in self.runner.config.get("exit_answers"):
                 exit_result = True
             else:

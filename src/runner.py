@@ -33,6 +33,9 @@ class RunnerReader(object):
     def drop_table(self):
         self.reader_writer.drop_table()
 
+    def run_sql(self):
+        self.reader_writer.run_sql()
+
     def get_total(self):
         total=0
         for date, data_list in self.runs_by_date.items():

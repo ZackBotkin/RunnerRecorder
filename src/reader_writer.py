@@ -220,3 +220,13 @@ class ReaderWriter(object):
         conn.execute('DROP TABLE runs')
         conn.commit()
 
+    def run_sql(self):
+        conn = sqlite3.connect(self.database_file_name)
+        sql_str = """
+        UPDATE runs
+        SET route_name = 'kingsbury'
+        WHERE date = '2023-03-16'
+        """
+        conn.execute(sql_str)
+        conn.commit()
+
