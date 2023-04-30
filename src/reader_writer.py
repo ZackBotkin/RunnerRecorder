@@ -46,6 +46,17 @@ class ReaderWriter(object):
         else:
             return self.get_runs_from_disk()
 
+    def get_legacy_runs(self):
+        runs_by_date = {}
+        runs_directory = self.config.get("legacy_runs_directory")
+        for file in os.listdir(runs_directory):
+            f = open("%s/%s" % (runs_directory, file))
+            data = json.load(f)
+            if data["date"] not in runs_by_date:
+                runs_by_date[data["date"]] = []
+            runs_by_date[data["date"]].append(data)
+        return runs_by_date
+
     def get_runs_from_db(self):
         runs_by_date = {}
         conn = sqlite3.connect(self.database_file_name)

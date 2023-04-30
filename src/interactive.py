@@ -121,18 +121,20 @@ class InteractiveRunner(object):
             return answer
 
     def graph_run_interactive(self):
-        GRAPH_CHOICES = ['bar', 'line']
-        answer = self.fancy_input("Which graph type would you like? (bar, line)\n")
+        GRAPH_CHOICES = ['bar', 'line', 'historical']
+        answer = self.fancy_input("Which graph type would you like? (bar, line, historical)\n")
         answer_is_in_choices = answer in GRAPH_CHOICES
         while not answer_is_in_choices:
             self.fancy_print("That isn't a valid choice")
-            answer = self.fancy_input("Which graph type would you like? (bar, line)\n")
+            answer = self.fancy_input("Which graph type would you like? (bar, line, historical)\n")
             answer_is_in_choices = answer in GRAPH_CHOICES
 
         if answer == "bar":
             self.runner.graph_all_runs()
         if answer == "line":
             self.runner.line_graph_all_runs()
+        if answer == "historical":
+            self.runner.historical_graph_all_runs()
 
         return True
 

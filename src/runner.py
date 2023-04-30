@@ -7,6 +7,7 @@ class RunnerReader(object):
         self.config = configs
         self.reader_writer = reader_writer
         self.runs_by_date = self.reader_writer.get_runs()
+        self.legacy_runs_by_date = self.reader_writer.get_legacy_runs()
 
     def reload(self):
         self.runs_by_date = self.reader_writer.get_runs()
@@ -108,6 +109,52 @@ class RunnerReader(object):
         import plotly.express as px
         fig = px.line(x=x_vals, y=y_vals, title=title_string)
         fig.write_html('first_figure.html', auto_open=True)
+        return True
+
+    def historical_graph_all_runs(self):
+        x_vals = []
+        y_vals = []
+        total_miles = 0
+        max_date = None
+        for date, data_list in self.runs_by_date.items():
+            total = 0
+            for data in data_list:
+                total += float(data["miles"])
+            x_vals.append(date)
+            y_vals.append(total)
+            total_miles += total
+            max_date = date
+        title_string = "%f miles run" % total_miles
+        import plotly.express as px
+        fig = px.bar(x=x_vals, y=y_vals, title=title_string)
+        fig.write_html('first_figure.html', auto_open=True)
+
+        max_date = datetime.fromisoformat(max_date)
+        max_month = max_date.month
+        max_day = max_date.day
+
+        x_vals = []
+        y_vals = []
+        total_miles = 0
+        current_date = None
+        for date, data_list in self.legacy_runs_by_date.items():
+
+            current_date = datetime.fromisoformat(date)
+            current_month = current_date.month
+            current_day = current_date.day
+            if current_month > max_month and current_day > max_day:
+                break
+
+            total = 0
+            for data in data_list:
+                total += float(data["miles"])
+            x_vals.append(date)
+            y_vals.append(total)
+            total_miles += total
+        title_string = "%f miles run" % total_miles
+        import plotly.express as px
+        fig = px.bar(x=x_vals, y=y_vals, title=title_string)
+        fig.write_html('second_figure.html', auto_open=True)
         return True
 
     def get_stats(self):
