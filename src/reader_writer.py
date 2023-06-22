@@ -222,11 +222,21 @@ class ReaderWriter(object):
 
     def run_sql(self):
         conn = sqlite3.connect(self.database_file_name)
+
+        #sql_str = """
+        #INSERT INTO runs (date, miles, route_name, comment)
+        #VALUES ('2023-05-04', 3.5, 'kingsbury', 'beautiful day, still recovering from vacation') 
+        #"""
         sql_str = """
-        UPDATE runs
-        SET route_name = 'kingsbury'
-        WHERE date = '2023-03-16'
+        DELETE FROM runs
+        WHERE date = '2023-06-04'
         """
+
+        #sql_str = """
+        #UPDATE runs
+        #SET route_name = 'kingsbury'
+        #WHERE date = '2023-03-16'
+        #"""
         conn.execute(sql_str)
         conn.commit()
 

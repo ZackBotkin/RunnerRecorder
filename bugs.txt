@@ -1,1 +1,27 @@
+<bugs>
+
+- fix the bug that doesnt allow for multiple runs in the json files
+
+
+<features>
+
+- i want to be able to see how many miles i've done per week, every week
+
+- i want to be able to graph how many of each type (lake, grand, etc) run that i've done, both bar graph and pie graph
+
+- it would be nice to have the historical graph on the same window as the current year
+
+- maybe some automated export of the database
+
+- it would be cool to be able to visually distinguish runs that occur on the same day as separate runs (in the graph)
+
+- hovering over the bar on the graph should reveal the comment for that run
+
+- port the data from 2022 into the database, add a date field aaccordingly
+
+- adding a new run should be a lot easier, no manually editing configs
+
+- editing a run should be a lot easier than it is, no going in and manually updating the sql 
+
+- some way to indicate how many miles per pair of shoe
 

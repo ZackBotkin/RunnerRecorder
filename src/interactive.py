@@ -12,6 +12,7 @@ class InteractiveRunner(object):
 
     def fancy_input(self, text):
         answer = input("%s %s" % (self.runner.config.get("line_start"), text))
+        answer = answer.strip()
         return answer
 
     def main_loop(self):
@@ -23,9 +24,6 @@ class InteractiveRunner(object):
         exit_result = False
         while not exit_result:
             answer = self.fancy_input("What do you want to do? %s\n" % self.main_menu)
-
-            answer = answer.strip()
-
             if answer in self.runner.config.get("record_run_answers"):
                 return_result = self.record_run_interactive()
                 self.runner.reload()
@@ -78,6 +76,7 @@ class InteractiveRunner(object):
         done = False
         self.fancy_print("Good for you! Lets record a run!\n")
         answer = self.fancy_input("Which run? Type one of the defaults, type \"new\" to enter a new run, or type \"show\" to show the defaults or \"exit\" to quit\n")
+
         if answer in self.runner.config.get("default_run_options"):
             comment = self.get_comment_interactive()
             self.fancy_print("Recording %s run!\n" % answer)
@@ -94,6 +93,7 @@ class InteractiveRunner(object):
 
         while not done:
             answer = self.fancy_input("Are you done recording runs?\n")
+
             if answer in ["Yes", "yes", "y"]:
                 return True
             elif answer in ["No", "no", "n"]:
