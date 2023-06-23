@@ -25,3 +25,7 @@
 
 - some way to indicate how many miles per pair of shoe
 
+- some way to adjust/recalculate the stats dynamically (ie: if my goal was X, my avgs would change by Y)
+
+- the "routes" should not display crazy amounts of decimals, and should have the number of times run for each, should order the routes on number of times run
+    -- also display total miles done with each of these
