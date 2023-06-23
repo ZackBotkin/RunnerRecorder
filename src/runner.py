@@ -1,5 +1,6 @@
 import plotly
 from datetime import datetime
+from src.util import get_miles_per_week
 
 class RunnerReader(object):
 
@@ -160,6 +161,24 @@ class RunnerReader(object):
         fig.write_html('second_figure.html', auto_open=True)
         return True
 
+    def weekly_graph(self):
+        x_vals = []
+        y_vals = []
+        total_miles = 0
+
+        miles_per_week = get_miles_per_week(self.runs_by_date, 2023) ## TODO do not hardcode
+        for week in miles_per_week:
+            x_vals.append(week.start_date)
+            y_vals.append(week.total_miles)
+            total_miles += week.total_miles
+
+        title_string = "%f miles run" % total_miles
+        import plotly.express as px
+        fig = px.bar(x=x_vals, y=y_vals, title=title_string)
+        fig.write_html('first_figure.html', auto_open=True)
+        return True
+
+
     def get_stats(self):
         total_runs = 0
         total_miles = 0
@@ -178,16 +197,24 @@ class RunnerReader(object):
         avg_runs_per_day = total_runs/day_of_year
         avg_miles_per_day = total_miles/day_of_year
         needed_avg = miles_remaining/days_left
+        miles_per_week = get_miles_per_week(self.runs_by_date, 2023) ## TODO : do not hardcode
+        avg_miles_per_week = total_miles/len(miles_per_week)
+        this_week = miles_per_week[-1]
+
         return {
             "day_of_year": day_of_year,
             "days_left": days_left,
+            "goal": goal_number,
+            "on_pace_for": avg_miles_per_day * 365, ## TODO leap year bug
             "total_runs": total_runs,
             "total_miles": total_miles,
             "miles_remaining": miles_remaining,
             "avg_miles_per_run": avg_miles_per_run,
             "avg_runs_per_day": avg_runs_per_day,
             "avg_miles_per_day": avg_miles_per_day,
-            "needed_avg": needed_avg
+            "needed_avg": needed_avg,
+            "avg_miles_per_week": avg_miles_per_week,
+            "miles_this_week": this_week.total_miles
         }
 
     def print_stats(self):
@@ -195,6 +222,8 @@ class RunnerReader(object):
         print("\n")
         print("\tDay of year: %d\n" % stats["day_of_year"])
         print("\tDays left: %d\n" % stats["days_left"])
+        print("\tGoal: %d\n" % stats["goal"])
+        print("\tOn pace for: %f\n" % stats["on_pace_for"])
         print("\tNumber of runs: %d\n" % stats["total_runs"])
         print("\tNumber of miles: %f\n" % stats["total_miles"])
         print("\tNumber of miles remaining until goal: %f\n" % stats["miles_remaining"])
@@ -202,5 +231,7 @@ class RunnerReader(object):
         print("\tRuns per day avg: %f\n" % stats["avg_runs_per_day"])
         print("\tMiles per day avg: %f\n" % stats["avg_miles_per_day"])
         print("\tMiles per day avg (needed for goal): %f\n" % stats["needed_avg"])
+        print("\tMiles per week avg: %f\n" % stats["avg_miles_per_week"])
+        print("\tMiles this week: %f\n" % stats["miles_this_week"])
         print("\n")
         return True

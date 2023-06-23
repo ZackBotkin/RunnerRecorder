@@ -6,48 +6,6 @@ from src.reader_writer import ReaderWriter
 from config.config import Configs
 
 
-class Week(object):
-
-    def __init__(self):
-        pass
-
-
-weekday_mappings = {
-    0 : 'monday',
-    1 : 'tuesday',
-    2 : 'wednesday',
-    3 : 'thursday',
-    4 : 'friday',
-    5 : 'saturday',
-    6 : 'sunday'
-}
-
-def get_start_of_week(from_date, start_of_week='sunday'):
-    weekday = weekday_mappings[from_date.weekday()]
-    while weekday != start_of_week:
-        from_date = from_date - timedelta(days=1)
-        weekday = weekday_mappings[from_date.weekday()]
-    return from_date
-
-def construct_weeks(from_date, start_of_week='sunday'):
-
-    by_weeks = {}
-
-    year = from_date.year
-    start_of_year = datetime(year, 1, 1)
-
-    current_date = get_start_of_week(start_of_year)
-    by_weeks[str(current_date)] = Week()
-
-    current_date = current_date + timedelta(days=1)
-    while current_date < from_date:
-        weekday = weekday_mappings[current_date.weekday()]
-        if weekday == start_of_week:
-            by_weeks[str(current_date)] = Week()
-        current_date = current_date + timedelta(days=1)
-
-    return by_weeks
-
 def main():
 
     parser = argparse.ArgumentParser(description= 'default parser')

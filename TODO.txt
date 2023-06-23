@@ -1,10 +1,6 @@
 <bugs>
 
-
-
 <features>
-
-- i want to be able to see how many miles i've done per week, every week
 
 - i want to be able to graph how many of each type (lake, grand, etc) run that i've done, both bar graph and pie graph
 
