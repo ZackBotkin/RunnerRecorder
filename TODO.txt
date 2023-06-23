@@ -1,6 +1,5 @@
 <bugs>
 
-- fix the bug that doesnt allow for multiple runs in the json files
 
 
 <features>

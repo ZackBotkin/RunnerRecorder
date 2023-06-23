@@ -59,6 +59,9 @@ class InteractiveRunner(object):
             elif answer == "drop_table":
                 #self.runner.drop_table()
                 exit_result = False
+
+            ## NOTE : this is highly suspect to abuse, and should
+            ## eventually get rid of this
             elif answer == "sql":
                 self.runner.run_sql()
                 self.runner.reload()

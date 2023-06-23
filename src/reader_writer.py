@@ -34,11 +34,19 @@ class ReaderWriter(object):
     def todays_date_str(self):
         return datetime.today().strftime("%Y-%m-%d")
 
-    def todays_file_name(self, date_str=None):
-        return "%s/%s.json" % (
-            self.config.get("runs_directory"),
-            date_str or self.todays_date_str()
-        )
+    def todays_file_name(self, date_str=None, individualizer=None):
+
+        if individualizer is not None:
+            return "%s/%s-%s.json" % (
+                self.config.get("runs_directory"),
+                date_str or self.todays_date_str(),
+                individualizer
+            )
+        else:
+            return "%s/%s.json" % (
+                self.config.get("runs_directory"),
+                date_str or self.todays_date_str()
+            )
 
     def get_runs(self):
         if self.use_db:
@@ -103,21 +111,30 @@ class ReaderWriter(object):
             self.write_new_run_to_db(args, comment)
 
     def write_run_to_disk(self, route_name, comment=None):
-        with open(self.todays_file_name(), 'w') as f:
-            mile_map = self.config.get("mile_map")
-            if route_name not in mile_map:
-                raise Exception("Unknown route!")
-            else:
-                miles = mile_map[route_name]
-                if comment is None:
-                    comment = ''
-                json.dump({
-                    "miles": miles,
-                    "date": self.todays_date_str(),
-                    "route_name": route_name,
-                    "comment": comment
-                }, f)
-                return
+
+        mile_map = self.config.get("mile_map")
+        if route_name not in mile_map:
+            raise Exception("Unknown route!")
+
+        todays_json_filename = self.todays_file_name()
+        already_exists = os.path.exists(todays_json_filename)
+        individualizer = 1
+        while already_exists:
+            todays_json_filename = self.todays_file_name(individualizer=individualizer)
+            individualizer += 1
+            already_exists = os.path.exists(todays_json_filename)
+
+        with open(todays_json_filename, 'w') as f:
+            miles = mile_map[route_name]
+            if comment is None:
+                comment = ''
+            json.dump({
+                "miles": miles,
+                "date": self.todays_date_str(),
+                "route_name": route_name,
+                "comment": comment
+            }, f)
+            return
 
     def write_new_run_to_disk(self, args):
         if "miles" not in args:

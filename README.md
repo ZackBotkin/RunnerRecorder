@@ -26,8 +26,5 @@ An example can be found under "example_config"
 TODO
 ----
 
+* found in the "TODO.txt" file
 
-** this will be fixed by using the database
-
-* packaging
-* more types of graphs
