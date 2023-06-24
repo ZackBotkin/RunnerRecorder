@@ -127,12 +127,12 @@ class InteractiveRunner(object):
             return answer
 
     def graph_run_interactive(self):
-        GRAPH_CHOICES = ['bar', 'line', 'historical', 'weeks']
-        answer = self.fancy_input("Which graph type would you like? (bar, line, historical, weeks)\n")
+        GRAPH_CHOICES = ['bar', 'line', 'historical', 'weeks', 'routes', 'miles_per_route']
+        answer = self.fancy_input("Which graph type would you like? (bar, line, historical, weeks, routes, miles_per_route)\n")
         answer_is_in_choices = answer in GRAPH_CHOICES
         while not answer_is_in_choices:
             self.fancy_print("That isn't a valid choice")
-            answer = self.fancy_input("Which graph type would you like? (bar, line, historical, weeks)\n")
+            answer = self.fancy_input("Which graph type would you like? (bar, line, historical, weeks, routes, miles_per_route)\n")
             answer_is_in_choices = answer in GRAPH_CHOICES
 
         if answer == "bar":
@@ -143,6 +143,10 @@ class InteractiveRunner(object):
             self.runner.historical_graph_all_runs()
         if answer == "weeks":
             self.runner.weekly_graph()
+        if answer == "routes":
+            self.runner.routes_graph()
+        if answer == "miles_per_route":
+            self.runner.miles_per_route_graph()
 
         return True
 

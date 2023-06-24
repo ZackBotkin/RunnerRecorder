@@ -178,6 +178,48 @@ class RunnerReader(object):
         fig.write_html('first_figure.html', auto_open=True)
         return True
 
+    def routes_graph(self):
+        route_count = {}
+        for date, data_list in self.runs_by_date.items():
+            for data in data_list:
+                route_name = data["route_name"]
+                if route_name not in route_count:
+                    route_count[route_name] = 1
+                else:
+                    route_count[route_name] += 1
+
+        x_vals = []
+        y_vals = []
+        for route_name, count in route_count.items():
+            x_vals.append(route_name)
+            y_vals.append(count)
+
+        import plotly.express as px
+        fig = px.bar(x=x_vals, y=y_vals, title="Routes")
+        fig.write_html('first_figure.html', auto_open=True)
+        return True
+
+    def miles_per_route_graph(self):
+        miles_per_route = {}
+        for date, data_list in self.runs_by_date.items():
+            for data in data_list:
+                route_name = data["route_name"]
+                if route_name not in miles_per_route:
+                    miles_per_route[route_name] = data["miles"]
+                else:
+                    miles_per_route[route_name] += data["miles"]
+
+        x_vals = []
+        y_vals = []
+        for route_name, total in miles_per_route.items():
+            x_vals.append(route_name)
+            y_vals.append(total)
+
+        import plotly.express as px
+        fig = px.bar(x=x_vals, y=y_vals, title="Routes")
+        fig.write_html('first_figure.html', auto_open=True)
+        return True
+
 
     def get_stats(self):
         total_runs = 0
