@@ -127,12 +127,12 @@ class InteractiveRunner(object):
             return answer
 
     def graph_run_interactive(self):
-        GRAPH_CHOICES = ['bar', 'line', 'historical', 'weeks', 'routes', 'miles_per_route']
-        answer = self.fancy_input("Which graph type would you like? (bar, line, historical, weeks, routes, miles_per_route)\n")
+        GRAPH_CHOICES = ['bar', 'line', 'historical', 'weeks', 'routes', 'miles_per_route', 'routes_pie']
+        answer = self.fancy_input("Which graph type would you like? (bar, line, historical, weeks, routes, miles_per_route, routes_pie)\n")
         answer_is_in_choices = answer in GRAPH_CHOICES
         while not answer_is_in_choices:
             self.fancy_print("That isn't a valid choice")
-            answer = self.fancy_input("Which graph type would you like? (bar, line, historical, weeks, routes, miles_per_route)\n")
+            answer = self.fancy_input("Which graph type would you like? (bar, line, historical, weeks, routes, miles_per_route, routes_pie)\n")
             answer_is_in_choices = answer in GRAPH_CHOICES
 
         if answer == "bar":
@@ -147,6 +147,8 @@ class InteractiveRunner(object):
             self.runner.routes_graph()
         if answer == "miles_per_route":
             self.runner.miles_per_route_graph()
+        if answer == "routes_pie":
+            self.runner.pie_chart_routes_graph()
 
         return True
 

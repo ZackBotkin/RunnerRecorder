@@ -199,6 +199,27 @@ class RunnerReader(object):
         fig.write_html('first_figure.html', auto_open=True)
         return True
 
+    def pie_chart_routes_graph(self):
+        route_count = {}
+        for date, data_list in self.runs_by_date.items():
+            for data in data_list:
+                route_name = data["route_name"]
+                if route_name not in route_count:
+                    route_count[route_name] = 1
+                else:
+                    route_count[route_name] += 1
+        labels = []
+        values = []
+        for route_name, count in route_count.items():
+            labels.append(route_name)
+            values.append(count)
+
+        import plotly.graph_objects as go
+        fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
+        fig.show()
+        return True
+
+
     def miles_per_route_graph(self):
         miles_per_route = {}
         for date, data_list in self.runs_by_date.items():

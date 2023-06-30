@@ -2,7 +2,6 @@
 
 <features>
 
-- i want to be able to graph how many of each type (lake, grand, etc) run that i've done, both bar graph and pie graph
 
 - it would be nice to have the historical graph on the same window as the current year
 
@@ -24,3 +23,10 @@
 
 - the "routes" should not display crazy amounts of decimals, and should have the number of times run for each, should order the routes on number of times run
     -- also display total miles done with each of these
+
+
+<done bugs>
+
+<done features>
+
+- i want to be able to graph how many of each type (lake, grand, etc) run that i've done, both bar graph and pie graph
