@@ -165,7 +165,7 @@ class InteractiveRunner(object):
         while not answer_in_choices:
             self.fancy_print("That isn't a valid choice\n")
             answer = self.fancy_input('What would you like to do? (add, show, delete, quit)\n')
-            answer_is_in_choices = answer in GRAPH_CHOICES
+            answer_is_in_choices = answer in ROUTE_CHOICES
 
         if answer == "add":
             self.add_new_route_interactive()
