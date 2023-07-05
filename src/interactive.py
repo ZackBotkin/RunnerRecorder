@@ -5,7 +5,7 @@ class InteractiveRunner(object):
     def __init__(self, runner):
         self.runner = runner
         self.main_menu = '(' + ', '.join(runner.config.get("main_menu_options")) + ')'
-        self.default_runs = '(' + ', '.join(runner.config.get("default_run_options")) + ')'
+        self.default_runs = '(' + ', '.join(runner.default_run_options) + ')'
 
     def fancy_print(self, text):
         print("%s %s" % (self.runner.config.get("line_start"), text))
@@ -26,6 +26,10 @@ class InteractiveRunner(object):
             answer = self.fancy_input("What do you want to do? %s\n" % self.main_menu)
             if answer in self.runner.config.get("record_run_answers"):
                 return_result = self.record_run_interactive()
+                self.runner.reload()
+                exit_result = False
+            elif answer in self.runner.config.get("edit_run_answers"):
+                return_result = self.edit_run_interactive()
                 self.runner.reload()
                 exit_result = False
             elif answer in self.runner.config.get("all_run_answers"):
@@ -126,6 +130,20 @@ class InteractiveRunner(object):
             return None
         else:
             return answer
+
+    def edit_run_interactive(self):
+        run_date = self.fancy_input("Which date (YYYY-MM-DD) do you want to edit (currently cannot do this for dates with more than one run)\n")
+        runs_on_date = self.runner.get_runs_on_date(run_date)
+        if len(runs_on_date) == 0:
+            self.fancy_print("No runs on date %s found\n" % run_date)
+            return True
+        elif len(runs_on_date) > 1:
+            self.fancy_print("More than one run on date %s found (not currently supporting this)\n" % run_date)
+            return True
+        else:
+            self.fancy_print("TODO: actually implement this\n")
+        return True
+
 
     ## TODO : this is starting to become cumbersome, and should probably be refactored into a "grapher" class or something
     def graph_run_interactive(self):

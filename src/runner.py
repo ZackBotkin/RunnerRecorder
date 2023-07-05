@@ -51,6 +51,10 @@ class RunnerReader(object):
     def get_routes(self):
         return self.reader_writer.get_routes()
 
+    def get_runs_on_date(self, run_date):
+        runs = self.reader_writer.get_runs_on_date(run_date)
+        return runs
+
     ## TODO : these sql methods should not really be exposed on the runner
     ## if they are going to be used, the interactive module should use the reader/write
     ## directly

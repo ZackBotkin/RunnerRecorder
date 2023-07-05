@@ -189,6 +189,13 @@ class ReaderWriter(object):
         conn.execute(query_str)
         conn.commit()
 
+    def get_runs_on_date(self, run_date):
+        query_str = "SELECT * FROM runs WHERE date = '%s'" % run_date
+        conn = sqlite3.connect(self.database_file_name)
+        query = conn.execute(query_str)
+        results = query.fetchall()
+        return results
+
     def write_run_to_db(self, route_name, comment=None):
         mile_map = self.miles_map()
         if route_name not in mile_map:
