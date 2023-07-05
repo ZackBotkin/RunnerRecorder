@@ -189,8 +189,6 @@ class InteractiveRunner(object):
 
         ## TODO - this should go in the config as "affirmative answers' or w/e
         if answer in ['yes', 'Yes', 'y', 'correct']:
-
-            ## TODO -- implement this
             self.runner.add_route(route_name, miles, description)
         else:
             self.fancy_print("aborting\n")
