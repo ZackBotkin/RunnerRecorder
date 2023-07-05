@@ -140,7 +140,7 @@ class ReaderWriter(object):
 
     def write_run_to_disk(self, route_name, comment=None):
 
-        mile_map = self.config.get("mile_map")
+        mile_map = self.miles_map()
         if route_name not in mile_map:
             raise Exception("Unknown route!")
 
