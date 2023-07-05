@@ -55,9 +55,8 @@ class RunnerReader(object):
         runs = self.reader_writer.get_runs_on_date(run_date)
         return runs
 
-    ## TODO : comment edit as well?
-    def edit_run(self, run_date, route_name, distance):
-        self.reader_writer.edit_run(run_date, route_name, distance)
+    def edit_run(self, run_date, route_name, distance, comment):
+        self.reader_writer.edit_run(run_date, route_name, distance, comment)
 
     ## TODO : these sql methods should not really be exposed on the runner
     ## if they are going to be used, the interactive module should use the reader/write

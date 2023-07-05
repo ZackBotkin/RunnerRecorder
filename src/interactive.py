@@ -145,11 +145,12 @@ class InteractiveRunner(object):
         return True
 
     def edit_run_for_date_interactive(self, run_date):
-        new_route_name = self.fancy_input("Write the new route name for date %s (or enter for no change)\n" % run_date)
-        new_distance = self.fancy_input("Write the new distance in miles for date %s (or enter for no change)\n" % run_date)
-        answer = self.fancy_input("%s, %s... correct?\n" % (new_route_name, new_distance))
+        new_route_name = self.fancy_input("Write the new route name for date %s\n" % run_date)
+        new_distance = self.fancy_input("Write the new distance in miles for date %s\n" % run_date)
+        new_comment = self.fancy_input("Write the new comment for date %s\n" % run_date)
+        answer = self.fancy_input("%s, %s, %s... correct?\n" % (new_route_name, new_distance, new_comment))
         if answer in ["yes", "y", "correct"]:
-            self.runner.edit_run(run_date, new_route_name, new_distance)
+            self.runner.edit_run(run_date, new_route_name, new_distance, new_comment)
             return True
         else:
             self.fancy_print("Aborting!\n")
