@@ -141,9 +141,19 @@ class InteractiveRunner(object):
             self.fancy_print("More than one run on date %s found (not currently supporting this)\n" % run_date)
             return True
         else:
-            self.fancy_print("TODO: actually implement this\n")
+            self.edit_run_for_date_interactive(run_date)
         return True
 
+    def edit_run_for_date_interactive(self, run_date):
+        new_route_name = self.fancy_input("Write the new route name for date %s (or enter for no change)\n" % run_date)
+        new_distance = self.fancy_input("Write the new distance in miles for date %s (or enter for no change)\n" % run_date)
+        answer = self.fancy_input("%s, %s... correct?\n" % (new_route_name, new_distance))
+        if answer in ["yes", "y", "correct"]:
+            self.runner.edit_run(run_date, new_route_name, new_distance)
+            return True
+        else:
+            self.fancy_print("Aborting!\n")
+            return True
 
     ## TODO : this is starting to become cumbersome, and should probably be refactored into a "grapher" class or something
     def graph_run_interactive(self):

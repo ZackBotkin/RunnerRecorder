@@ -196,6 +196,13 @@ class ReaderWriter(object):
         results = query.fetchall()
         return results
 
+    ## TODO : comment editable?
+    def edit_run(self, run_date, route_name, distance):
+        query_str = "UPDATE runs SET route_name = '%s', miles = '%s' WHERE date = '%s'" % (route_name, distance, run_date)
+        conn = sqlite3.connect(self.database_file_name)
+        conn.execute(query_str)
+        conn.commit()
+
     def write_run_to_db(self, route_name, comment=None):
         mile_map = self.miles_map()
         if route_name not in mile_map:
