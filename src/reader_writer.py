@@ -25,11 +25,14 @@ class ReaderWriter(object):
         if self.config.get("create_table_upon_start"):
             try:
                 self.create_runs_table()
+            ## ignore if the table already exists
+            except sqlite3.OperationalError:
+                pass
+            try:
                 self.create_routes_table()
             ## ignore if the table already exists
             except sqlite3.OperationalError:
                 pass
-
 
     def todays_date_str(self):
         return datetime.today().strftime("%Y-%m-%d")
@@ -48,6 +51,8 @@ class ReaderWriter(object):
                 date_str or self.todays_date_str()
             )
 
+    ## TODO : maybe this should return a class/object rather than
+    ## a json struct
     def get_runs(self):
         if self.use_db:
             return self.get_runs_from_db()
@@ -64,6 +69,29 @@ class ReaderWriter(object):
                 runs_by_date[data["date"]] = []
             runs_by_date[data["date"]].append(data)
         return runs_by_date
+
+    ## TODO : maybe this should return a list of "Route" classes
+    def get_routes(self):
+        conn = sqlite3.connect(self.database_file_name)
+        query = conn.execute('SELECT * FROM routes')
+        results = query.fetchall()
+        routes = []
+        for route in results:
+            routes.append({
+                'route_name': route[0],
+                'miles': float(route[1]),  ## TODO: kinda janky, should enforce that we are saving as a float or w/e
+                'description': route[2]
+            })
+        return routes
+
+    def miles_map(self):
+        conn = sqlite3.connect(self.database_file_name)
+        query = conn.execute('SELECT * FROM routes')
+        results = query.fetchall()
+        miles_map = {}
+        for route in results:
+            miles_map[route[0]] = float(route[1]) ## TODO -- again a little janky
+        return miles_map
 
     def get_runs_from_db(self):
         runs_by_date = {}
@@ -154,8 +182,15 @@ class ReaderWriter(object):
             }, f)
             return
 
+    ## TODO : standardize these method names man
+    def add_route(self, route_name, miles, description):
+        query_str = "INSERT INTO routes VALUES ('%s', '%s', '%s')" % (route_name, miles, description)
+        conn = sqlite3.connect(self.database_file_name)
+        conn.execute(query_str)
+        conn.commit()
+
     def write_run_to_db(self, route_name, comment=None):
-        mile_map = self.config.get("mile_map")
+        mile_map = self.miles_map()
         if route_name not in mile_map:
             raise Exception("Unknown route!")
         else:
@@ -193,10 +228,12 @@ class ReaderWriter(object):
 
     def create_routes_table(self):
         conn = sqlite3.connect(self.database_file_name)
-        conn.execute("CREATE TABLE routes(route_name, miles, description")
+        conn.execute("CREATE TABLE routes(route_name, miles, description)")
         conn.commit()
 
 
+    ## TODO : maybe deprecate this or otherwise rename once everything is inside the
+    ## database, it's only purpose is to migrate from json files to database
     def migrate_data(self, runs_by_date):
         conn = sqlite3.connect(self.database_file_name)
         query_str = "INSERT INTO runs VALUES "
@@ -237,6 +274,11 @@ class ReaderWriter(object):
         conn.execute('DROP TABLE runs')
         conn.commit()
 
+    def drop_routes_table(self):
+        conn = sqlite3.connect(self.database_file_name)
+        conn.execute('DROP TABLE routes')
+        conn.commit()
+
     def run_sql(self):
         conn = sqlite3.connect(self.database_file_name)
 
@@ -244,16 +286,32 @@ class ReaderWriter(object):
         #INSERT INTO runs (date, miles, route_name, comment)
         #VALUES ('2023-05-04', 3.5, 'kingsbury', 'beautiful day, still recovering from vacation') 
         #"""
-        sql_str = """
-        DELETE FROM runs
-        WHERE date = '2023-06-04'
-        """
+        #sql_str = """
+        #DELETE FROM runs
+        #WHERE date = '2023-06-04'
+        #"""
 
         #sql_str = """
         #UPDATE runs
         #SET route_name = 'kingsbury'
         #WHERE date = '2023-03-16'
         #"""
+
+        sql_str = """
+        INSERT INTO routes
+        (route_name, miles, description)
+        VALUES
+        ('grand', 7.45, 'to the lake, turn back at grand'),
+        ('lake', 8.25, 'to the lake, turn back at lake'),
+        ('lakeshore', 6.1, 'to the lake, turn back at division'),
+        ('sedgewick', 4.75, 'turn back at sedgewick'),
+        ('kingsbury', 3.5, 'turn back at kingsbury'),
+        ('roosevelt', 10.73, 'to the lake, turn back at roosevelt'),
+        ('madison', 8.8, 'to the lake, turn back at madison'),
+        ('farmers market', 2.45, 'out to damen, turn back at milwaukee'),
+        ('van buren', 9.45, 'out to the lake, turn back at van buren')
+        """
+
         conn.execute(sql_str)
         conn.commit()
 

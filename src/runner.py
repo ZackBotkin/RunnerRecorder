@@ -2,6 +2,14 @@ import plotly
 from datetime import datetime
 from src.util import get_miles_per_week
 
+#
+#   TODO : in general refactoring idea
+#       - interactive --> get user input
+#       - runner --> "manager" of the data, deals with classes, not database
+#       - reader_writer --> talks to the database, in theory, you could swap this out
+#               and the runner would be none the wiser
+#
+
 class RunnerReader(object):
 
     def __init__(self, configs, reader_writer):
@@ -9,6 +17,10 @@ class RunnerReader(object):
         self.reader_writer = reader_writer
         self.runs_by_date = self.reader_writer.get_runs()
         self.legacy_runs_by_date = self.reader_writer.get_legacy_runs()
+        self.routes = self.get_routes()
+        self.default_run_options = []
+        for route in self.routes:
+            self.default_run_options.append(route['route_name'])
 
     def reload(self):
         self.runs_by_date = self.reader_writer.get_runs()
@@ -20,14 +32,28 @@ class RunnerReader(object):
         self.reader_writer.write_new_run(args, comment)
 
     def create_table(self):
-        self.reader_writer.create_table()
+        self.reader_writer.create_routes_table()
 
     def migrate_data(self):
         self.reader_writer.migrate_data(self.runs_by_date)
 
+    ## TODO : is this used for anything? deprecate
     def read_data(self):
         self.reader_writer.read_data()
 
+    def add_route(self, route_name, miles, description):
+        miles = float(miles)
+        self.reader_writer.add_route(route_name, miles, description)
+
+    def delete_route(self, route_name):
+        pass
+
+    def get_routes(self):
+        return self.reader_writer.get_routes()
+
+    ## TODO : these sql methods should not really be exposed on the runner
+    ## if they are going to be used, the interactive module should use the reader/write
+    ## directly
     def delete_data(self):
         self.reader_writer.delete_data()
 
@@ -71,17 +97,23 @@ class RunnerReader(object):
         return True
 
     def print_all_routes(self):
-
-        ## TODO : get this from the database
-        routes = self.config.get('mile_map')
-        all_data = [('Route Name', 'Distance')]
+        routes = self.get_routes()
+        all_data = [('Route Name', 'Distance', 'Description')]
         import pandas as pd
-        for route_name, miles in routes.items():
-            all_data.append((route_name, "%f miles" % miles))
+        for route in routes:
+            all_data.append(
+                (
+                    route['route_name'],
+                    "%f miles" % route['miles'],
+                    route['description']
+                )
+            )
         df = pd.DataFrame(all_data)
         print(df.to_string(index=False))
         return True
 
+
+    ## TODO : this should most likely be refactored into a "Grapher" class
     def graph_all_runs(self):
 
         x_vals = []
@@ -218,7 +250,6 @@ class RunnerReader(object):
         fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
         fig.show()
         return True
-
 
     def miles_per_route_graph(self):
         miles_per_route = {}

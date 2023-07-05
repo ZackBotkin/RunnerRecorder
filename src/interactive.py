@@ -40,14 +40,13 @@ class InteractiveRunner(object):
             elif answer in self.runner.config.get("route_answers"):
                 return_result = self.routes_interactive()
                 exit_result = False
-
             ## Temporary methods while I am migrating data around
             elif answer in ["migrate", "migrate_data"]:
                 self.runner.migrate_data()
                 exit_result = False
                 self.runner.reload()
             elif answer == "create_table":
-                self.runner.create_table()
+                #self.runner.create_table()
                 exit_result = False
             elif answer in ["read_data", "table_data", "db_data"]:
                 self.runner.read_data()
@@ -57,7 +56,7 @@ class InteractiveRunner(object):
                 exit_result = False
                 self.runner.reload()
             elif answer == "drop_table":
-                #self.runner.drop_table()
+                #self.runner.reader_writer.drop_routes_table()
                 exit_result = False
 
             ## NOTE : this is highly suspect to abuse, and should
@@ -80,7 +79,8 @@ class InteractiveRunner(object):
         self.fancy_print("Good for you! Lets record a run!\n")
         answer = self.fancy_input("Which run? Type one of the defaults, type \"new\" to enter a new run, or type \"show\" to show the defaults or \"exit\" to quit\n")
 
-        if answer in self.runner.config.get("default_run_options"):
+
+        if answer in self.runner.default_run_options:
             comment = self.get_comment_interactive()
             self.fancy_print("Recording %s run!\n" % answer)
             self.runner.write_run(answer, comment)
@@ -107,6 +107,7 @@ class InteractiveRunner(object):
 
         return True
 
+    ## TODO : have some sort of support to save the route if doing it this way... honestly sort of low priority though since I dont use this use case a whole lot
     def record_new_run_interactive(self):
         route_name = self.fancy_input("What is the name of the new route?\n")
         number_of_miles = self.fancy_input("What is the number of miles on this route?\n")
@@ -126,6 +127,7 @@ class InteractiveRunner(object):
         else:
             return answer
 
+    ## TODO : this is starting to become cumbersome, and should probably be refactored into a "grapher" class or something
     def graph_run_interactive(self):
         GRAPH_CHOICES = ['bar', 'line', 'historical', 'weeks', 'routes', 'miles_per_route', 'routes_pie']
         answer = self.fancy_input("Which graph type would you like? (bar, line, historical, weeks, routes, miles_per_route, routes_pie)\n")
@@ -155,6 +157,45 @@ class InteractiveRunner(object):
     ## right now this just prints, but this will be the entry
     ## point for adding routes and stuff like that
     def routes_interactive(self):
-        self.runner.print_all_routes()
 
+        ROUTE_CHOICES = ['add', 'show', 'delete', 'quit']
 
+        answer = self.fancy_input('What would you like to do? (add, show, delete, quit)\n')
+        answer_in_choices = answer in ROUTE_CHOICES
+        while not answer_in_choices:
+            self.fancy_print("That isn't a valid choice\n")
+            answer = self.fancy_input('What would you like to do? (add, show, delete, quit)\n')
+            answer_is_in_choices = answer in GRAPH_CHOICES
+
+        if answer == "add":
+            self.add_new_route_interactive()
+        if answer == "show":
+            self.runner.print_all_routes()
+            print("\n")
+        if answer == "delete":
+            self.delete_route_interactive()
+
+        return True
+
+    def add_new_route_interactive(self):
+
+        route_name = self.fancy_input('What is the name of the new route?\n')
+
+        ## TODO enforce that this is a number
+        miles = self.fancy_input('How many miles is this route?\n')
+        description = self.fancy_input('Enter a description for this route.\n')
+
+        answer = self.fancy_input('route_name: %s, miles: %s, description: %s\n correct?\n' %(route_name, miles, description))
+
+        ## TODO - this should go in the config as "affirmative answers' or w/e
+        if answer in ['yes', 'Yes', 'y', 'correct']:
+
+            ## TODO -- implement this
+            self.runner.add_route(route_name, miles, description)
+        else:
+            self.fancy_print("aborting\n")
+
+        return True
+
+    def delete_route_interactive(self):
+        return True
