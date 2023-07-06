@@ -1,7 +1,7 @@
 import argparse
 from datetime import datetime, timedelta
 from src.runner import RunnerReader
-from src.interactive import InteractiveRunner
+from src.interactive.main_menu import MainMenu
 from src.reader_writer import ReaderWriter
 from config.config import Configs
 
@@ -31,7 +31,7 @@ def main():
     elif args.print_stats:
         reader.print_stats()
     elif args.interactive:
-        interactive = InteractiveRunner(reader)
+        interactive = MainMenu(reader)
         interactive.main_loop()
     else:
         total = reader.get_total()

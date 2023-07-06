@@ -12,7 +12,7 @@ class Week(object):
         self.total_miles = 0
 
     def add_miles(self, miles):
-        self.total_miles += miles
+        self.total_miles += float(miles)
 
 
 def get_miles_per_week(runs_by_date, year):

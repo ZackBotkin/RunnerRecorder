@@ -10,6 +10,10 @@ from src.util import get_miles_per_week
 #               and the runner would be none the wiser
 #
 
+#
+#   TODO : this should probably now be re-named manager
+#
+
 class RunnerReader(object):
 
     def __init__(self, configs, reader_writer):
@@ -63,6 +67,8 @@ class RunnerReader(object):
     ## directly
     def delete_data(self):
         self.reader_writer.delete_data()
+    def delete_routes(self):
+        self.reader_writer.delete_routes()
 
     def drop_table(self):
         self.reader_writer.drop_table()

@@ -283,6 +283,11 @@ class ReaderWriter(object):
         conn.execute('DELETE FROM runs')
         conn.commit()
 
+    def delete_routes(self):
+        conn = sqlite3.connect(self.database_file_name)
+        conn.execute('DELETE FROM routes')
+        conn.commit()
+
     def drop_table(self):
         conn = sqlite3.connect(self.database_file_name)
         conn.execute('DROP TABLE runs')
