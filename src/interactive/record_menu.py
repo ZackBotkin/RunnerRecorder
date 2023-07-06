@@ -24,7 +24,7 @@ class DefaultRunsMenu(InteractiveMenu):
             print("\nPlease pick one of ")
             self.menu_print(default_run_options)
             print("Back, Exit")
-            answer = self.fancy_input("")
+            answer = self.fancy_input(" ")
             if answer in default_run_options:
                 print("Comment on this run? (Enter for empty comment)")
                 comment = self.fancy_input("")
