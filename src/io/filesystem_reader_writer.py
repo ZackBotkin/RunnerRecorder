@@ -59,7 +59,9 @@ class FileSystemReaderWriter(ReaderWriter):
         print("Warning, not updating the file system")
 
     def get_routes(self):
-        raise Exception("This is not implemented and probably won't be")
+        #raise Exception("This is not implemented and probably won't be")
+        print("This is not implemented and probably won't be")
+        return []
 
     def add_route(self, route_name, distance_in_miles, description):
         #raise Exception("This is not implemented and probably won't be")

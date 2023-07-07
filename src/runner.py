@@ -1,6 +1,7 @@
 import plotly
 from datetime import datetime
 from src.util import get_miles_per_week
+from src.io.query_runner import QueryRunner
 
 #
 #   TODO : in general refactoring idea
@@ -326,14 +327,43 @@ class RunnerReader(object):
     def run_sql(self):
         raise Exception("Not implemented")
 
-    def read_data(self):
-        raise Exception("Not implemented")
+    def read_runs(self):
+        results = QueryRunner(self.config).get_runs()
+        for result in results:
+            print(result)
 
-    def delete_data(self):
-        raise Exception("Not implemented")
+    def read_routes(self):
+        results = QueryRunner(self.config).get_routes()
+        for result in results:
+            print(result)
+
+    def runs_count(self):
+        results = QueryRunner(self.config).get_runs()
+        print("%d rows in 'run' table" % len(results))
+
+    def routes_count(self):
+        results = QueryRunner(self.config).get_routes()
+        print("%d rows in 'route' table" % len(results))
+
+    def delete_runs(self):
+        results = QueryRunner(self.config).get_runs()
+        runs_count = len(results)
+        print("Deleting %d rows from 'runs' table" % runs_count)
+        QueryRunner(self.config).delete_data_from_runs_table()
+
+    def insert_default_routes(self):
+        print("Inserting the default set of routes")
+        QueryRunner(self.config).insert_initial_route_data()
 
     def delete_routes(self):
-        raise Exception("Not implemented")
+        results = QueryRunner(self.config).get_routes()
+        routes_count = len(results)
+        print("Deleting %d rows from 'routes' table" % routes_count)
+        QueryRunner(self.config).delete_data_from_routes_table()
 
     def migrate_data(self):
-        raise Exception("Not implemented")
+        legacy_runs = self.legacy_runs_by_date
+        print("Saving %d rows" % len(legacy_runs))
+        QueryRunner(self.config).migrate_data(legacy_runs)
+
+

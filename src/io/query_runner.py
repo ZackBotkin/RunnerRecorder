@@ -49,7 +49,7 @@ class QueryRunner(object):
         self.run_sql(sql_str)
 
     def delete_data_from_runs_table(self):
-        self.run_sql('DELETE FROM routes')
+        self.run_sql('DELETE FROM runs')
 
     def delete_data_from_routes_table(self):
         self.run_sql('DELETE FROM routes')

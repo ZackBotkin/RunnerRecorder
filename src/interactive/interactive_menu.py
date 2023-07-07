@@ -55,12 +55,17 @@ class InteractiveMenu(object):
                 prompt = '%s, Back, Exit' % sub_menu_as_str
             print("%s" % prompt)
             answer = self.fancy_input("")
+            pre_capitalized_answer = answer
             answer = answer.capitalize()
             if answer in sub_menu_mapping:
                 sub_menu_module = sub_menu_mapping[answer]
                 sub_menu_module.main_loop()
-            if answer in ["back", "Back"]:
+            elif answer in ["back", "Back"]:
                 back_result = True
-            if answer in ["exit", "Exit"]:
+            elif answer in ["exit", "Exit"]:
                 exit()
+            elif answer == '':
+                pass
+            else:
+                print("\"%s\" is not a valid choice. Please choose one of the following options" % pre_capitalized_answer)
         
