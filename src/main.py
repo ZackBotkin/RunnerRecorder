@@ -2,7 +2,10 @@ import argparse
 from datetime import datetime, timedelta
 from src.runner import RunnerReader
 from src.interactive.main_menu import MainMenu
-from src.reader_writer import ReaderWriter
+from src.io.reader_writer import ReaderWriter
+from src.io.db_reader_writer import DbReaderWriter
+from src.io.filesystem_reader_writer import FileSystemReaderWriter
+from src.io.query_runner import QueryRunner
 from config.config import Configs
 
 
@@ -19,8 +22,31 @@ def main():
     args = parser.parse_args()
 
     configs = Configs(args.config_file)
-    reader_writer = ReaderWriter(configs)
-    reader = RunnerReader(configs, reader_writer)
+
+    use_db = True
+    if configs.get("read_from_db") and configs.get("read_from_disk"):
+        raise Exception("Cannot read from both datasources, update the config file to set either \"read_from_db\" or \"read_from_disk\" to false")
+    elif not configs.get("read_from_db") and not configs.get("read_from_disk"):
+        raise Exception("Need to select a datasource to read from, update the config file to set either \"read_from_db\" or \"read_from_disk\" to true")
+    else:
+        use_db = configs.get("read_from_db")
+
+    if use_db:
+        input_source = DbReaderWriter(configs)
+    else:
+        miles_map = QueryRunner(configs).miles_map()
+        input_source = FileSystemReaderWriter(configs, miles_map)
+
+    output_sources = []
+    if not configs.get("write_to_db") and not configs.get("write_to_disk"):
+        raise Exception("Need to select a datasource to read from, update the config file to set either \"read_from_db\" or \"read_from_disk\" to true")
+    if configs.get("write_to_db"):
+        output_sources.append(DbReaderWriter(configs))
+    if configs.get("write_to_disk"):
+        miles_map = QueryRunner(configs).miles_map()
+        output_sources.append(FileSystemReaderWriter(configs, miles_map))
+
+    reader = RunnerReader(configs, input_source, output_sources)
 
     if args.print_all_runs:
         reader.print_all_runs()

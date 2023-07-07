@@ -16,65 +16,45 @@ from src.util import get_miles_per_week
 
 class RunnerReader(object):
 
-    def __init__(self, configs, reader_writer):
+    def __init__(self, configs, input_source, output_sources):
+
         self.config = configs
-        self.reader_writer = reader_writer
-        self.runs_by_date = self.reader_writer.get_runs()
-        self.legacy_runs_by_date = self.reader_writer.get_legacy_runs()
+
+        self.input_source = input_source
+        self.output_sources = output_sources
+
+        self.runs_by_date = self.input_source.get_runs()
+        self.legacy_runs_by_date = self.input_source.get_legacy_runs()
+
         self.routes = self.get_routes()
+
         self.default_run_options = []
+
         for route in self.routes:
             self.default_run_options.append(route['route_name'])
 
     def reload(self):
-        self.runs_by_date = self.reader_writer.get_runs()
+        self.runs_by_date = self.input_source.get_runs()
 
     def write_run(self, route_name, comment=None):
-        self.reader_writer.write_run(route_name, comment)
-
-    def write_new_run(self, args, comment=None):
-        self.reader_writer.write_new_run(args, comment)
-
-    def create_table(self):
-        self.reader_writer.create_routes_table()
-
-    def migrate_data(self):
-        self.reader_writer.migrate_data(self.runs_by_date)
-
-    ## TODO : is this used for anything? deprecate
-    def read_data(self):
-        self.reader_writer.read_data()
+        for output_source in self.output_sources:
+            output_source.add_run(route_name, comment)
 
     def add_route(self, route_name, miles, description):
         miles = float(miles)
-        self.reader_writer.add_route(route_name, miles, description)
-
-    def delete_route(self, route_name):
-        pass
+        for output_source in self.output_sources:
+            output_source.add_route(route_name, miles, description)
 
     def get_routes(self):
-        return self.reader_writer.get_routes()
+        return self.input_source.get_routes()
 
     def get_runs_on_date(self, run_date):
-        runs = self.reader_writer.get_runs_on_date(run_date)
+        runs = self.input_source.get_runs(run_date=run_date)
         return runs
 
     def edit_run(self, run_date, route_name, distance, comment):
-        self.reader_writer.edit_run(run_date, route_name, distance, comment)
-
-    ## TODO : these sql methods should not really be exposed on the runner
-    ## if they are going to be used, the interactive module should use the reader/write
-    ## directly
-    def delete_data(self):
-        self.reader_writer.delete_data()
-    def delete_routes(self):
-        self.reader_writer.delete_routes()
-
-    def drop_table(self):
-        self.reader_writer.drop_table()
-
-    def run_sql(self):
-        self.reader_writer.run_sql()
+        for output_source in self.output_sources:
+            output_source.edit_run(run_date, route_name, distance, comment)
 
     def get_total(self):
         total=0
@@ -124,7 +104,6 @@ class RunnerReader(object):
         df = pd.DataFrame(all_data)
         print(df.to_string(index=False))
         return True
-
 
     ## TODO : this should most likely be refactored into a "Grapher" class
     def graph_all_runs(self):
@@ -342,3 +321,19 @@ class RunnerReader(object):
         print("\tMiles this week: %f\n" % stats["miles_this_week"])
         print("\n")
         return True
+
+    ## TODO : eventually get rid of these, they do not belong on the maanger
+    def run_sql(self):
+        raise Exception("Not implemented")
+
+    def read_data(self):
+        raise Exception("Not implemented")
+
+    def delete_data(self):
+        raise Exception("Not implemented")
+
+    def delete_routes(self):
+        raise Exception("Not implemented")
+
+    def migrate_data(self):
+        raise Exception("Not implemented")

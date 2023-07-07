@@ -9,7 +9,7 @@ class EditMenu(InteractiveMenu):
     def main_loop(self):
         print("Which date (YYYY-MM-DD) do you want to edit (currently cannot do this for dates with more than one run)\n")
         run_date = self.fancy_input(" ")
-        runs_on_date = self.manager.get_runs_on_date(run_date)
+        runs_on_date = self.manager.get_runs_on_date(run_date=run_date)
         if len(runs_on_date) == 0:
             print("No runs on date %s found" % run_date)
         elif len(runs_on_date) > 1:
