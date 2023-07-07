@@ -59,7 +59,24 @@ class DbReaderWriter(ReaderWriter):
         self.query_runner.update_run(run_date, route_name, distance_in_miles, comment)
 
     def get_legacy_runs(self):
-        pass ## TODO : this will be possible once I move the 2022 runs to the DB
+        runs_by_date = {}
+        results = self.query_runner.get_runs_for_year(2022) ## TODO do not hardcode
+        for result in results:
+            _date = result[0]
+            _miles = result[1]
+            _route_name = result[2]
+            _comment = result[3]
+            if _comment is None:
+                _comment = ""
+            if _date not in runs_by_date:
+                runs_by_date[_date] = []
+            runs_by_date[_date].append({
+                'date': _date,
+                'miles': _miles,
+                'route_name': _route_name,
+                'comment': _comment
+            })
+        return runs_by_date
 
     def get_routes(self):
         results = self.query_runner.get_routes()

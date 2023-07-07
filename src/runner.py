@@ -2,6 +2,7 @@ import plotly
 from datetime import datetime
 from src.util import get_miles_per_week
 from src.io.query_runner import QueryRunner
+from src.io.filesystem_reader_writer import FileSystemReaderWriter
 
 #
 #   TODO : in general refactoring idea
@@ -345,11 +346,11 @@ class RunnerReader(object):
         results = QueryRunner(self.config).get_routes()
         print("%d rows in 'route' table" % len(results))
 
-    def delete_runs(self):
+    def delete_runs(self, run_date=None):
         results = QueryRunner(self.config).get_runs()
         runs_count = len(results)
         print("Deleting %d rows from 'runs' table" % runs_count)
-        QueryRunner(self.config).delete_data_from_runs_table()
+        QueryRunner(self.config).delete_data_from_runs_table(run_date=run_date)
 
     def insert_default_routes(self):
         print("Inserting the default set of routes")
@@ -366,4 +367,19 @@ class RunnerReader(object):
         print("Saving %d rows" % len(legacy_runs))
         QueryRunner(self.config).migrate_data(legacy_runs)
 
+    def drop_runs(self):
+        print("Dropping 'runs' table'")
+        QueryRunner(self.config).drop_runs_table()
 
+    def drop_routes(self):
+        print("Dropping 'routes' table'")
+        QueryRunner(self.config).drop_routes_table()
+
+    def migrate_all_data_to_new_db(self):
+        print("Migrating all data over to the new Db")
+        runs_by_date = self.runs_by_date
+        legacy_runs_by_date = FileSystemReaderWriter(self.config, {}).get_legacy_runs()
+        QueryRunner(self.config).migrate_all_data_to_new_db(runs_by_date, legacy_runs_by_date)
+
+    def read_data_from_migrated_db(self):
+        QueryRunner(self.config).read_migrate_database()

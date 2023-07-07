@@ -9,6 +9,8 @@ class SqlMenu(InteractiveMenu):
             InsertRoutes(manager),
             Count(manager),
             MigrateData(manager),
+            MigrateToNewDb(manager),
+            ReadFromNewDb(manager),
             DeleteSql(manager)
         ]
     def title(self):
@@ -20,6 +22,16 @@ class MigrateData(InteractiveMenu):
     def main_loop(self):
         self.manager.migrate_data()
         self.manager.reload()
+class MigrateToNewDb(InteractiveMenu):
+    def title(self):
+        return "Test"
+    def main_loop(self):
+        self.manager.migrate_all_data_to_new_db()
+class ReadFromNewDb(InteractiveMenu):
+    def title(self):
+        return "Test2"
+    def main_loop(self):
+        self.manager.read_data_from_migrated_db()
 
 class InsertRoutes(InteractiveMenu):
     def title(self):
@@ -82,7 +94,12 @@ class DeleteRuns(InteractiveMenu):
     def title(self):
         return "Runs"
     def main_loop(self):
-        self.manager.delete_runs()
+        print("For which date? (YYYY-MM-DD) (hit enter to delete everything)")
+        run_date = self.fancy_input(" ")
+        if run_date == '':
+            self.manager.delete_runs()
+        else:
+            self.manager.delete_runs(run_date= run_date)
         self.manager.reload()
 
 class DeleteRoutes(InteractiveMenu):
