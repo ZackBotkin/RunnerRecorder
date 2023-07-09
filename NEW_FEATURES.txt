@@ -1,0 +1,15 @@
+- some sort of tree view so that I know where in the menu that i am
+- standardize the interactive menu so that i can use it in other projects
+- monthly stats
+- it would be cool if i type "graph bar" for example, it would immediately go into that menu, or like run defaults grand
+- some sort of tab complete, it would be great if i could standardize that in the interactive menu
+- the top level should be
+    "Runs", "All", "Stats", "Routes", "Shoes", "Graphs"
+    where runs expands into add/edit/delete
+    stats expands into year menu
+    routes expands to add/edit/delete
+
+    slight reworking basically
+
+- a script/command that populates the test database for various days
+    -- prod --> test copy

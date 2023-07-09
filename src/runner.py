@@ -329,7 +329,7 @@ class RunnerReader(object):
         raise Exception("Not implemented")
 
     def read_runs(self):
-        results = QueryRunner(self.config).get_runs()
+        results = QueryRunner(self.config).get_all_runs()
         for result in results:
             print(result)
 
@@ -339,7 +339,7 @@ class RunnerReader(object):
             print(result)
 
     def runs_count(self):
-        results = QueryRunner(self.config).get_runs()
+        results = QueryRunner(self.config).get_all_runs()
         print("%d rows in 'run' table" % len(results))
 
     def routes_count(self):
@@ -347,7 +347,7 @@ class RunnerReader(object):
         print("%d rows in 'route' table" % len(results))
 
     def delete_runs(self, run_date=None):
-        results = QueryRunner(self.config).get_runs()
+        results = QueryRunner(self.config).get_runs(run_date=run_date)
         runs_count = len(results)
         print("Deleting %d rows from 'runs' table" % runs_count)
         QueryRunner(self.config).delete_data_from_runs_table(run_date=run_date)

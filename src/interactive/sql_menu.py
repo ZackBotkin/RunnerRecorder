@@ -99,7 +99,7 @@ class DeleteRuns(InteractiveMenu):
         if run_date == '':
             self.manager.delete_runs()
         else:
-            self.manager.delete_runs(run_date= run_date)
+            self.manager.delete_runs(run_date=run_date)
         self.manager.reload()
 
 class DeleteRoutes(InteractiveMenu):

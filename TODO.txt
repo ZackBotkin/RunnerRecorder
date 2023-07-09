@@ -1,9 +1,6 @@
 <bugs>
 
-- when you enter a route name that the runner does not recognize, then it will immediately say "are you done recording runs" when i would like it to ask for the correct name of the run, or ask the user to enter a new run (or i guess just exit)
-- when you are in the routes menu, and do "show", once done it immediately takes you back to the main menu, should take you back to routes menu
-- in the edit menu, there needs to be a "back/exit" button, right now it just accepts whatever input it is given as a date and mostly fails
-- when deleting runs, it still says "deleted <full number of rows> rows" instead of the number it is actually deleting
+- whitespace before and after commands should be ignored
 
 <features>
 
@@ -16,7 +13,6 @@
 - the "routes" should not display crazy amounts of decimals, and should have the number of times run for each, should order the routes on number of times run
     -- also display total miles done with each of these
 
-
 <refactors>
 
 - the json structs that get passed around become classes
@@ -28,6 +24,13 @@
 -----------------------------------------------------------------------------
 
 <done bugs>
+
+- when you enter a route name that the runner does not recognize, then it will immediately say "are you done recording runs" when i would like it to ask for the correct name of the run, or ask the user to enter a new run (or i guess just exit)
+    -- this was a freebee fix through one of the refactors
+- when you are in the routes menu, and do "show", once done it immediately takes you back to the main menu, should take you back to routes menu
+    -- I also got this one for free through the refactor
+- in the edit menu, there needs to be a "back/exit" button, right now it just accepts whatever input it is given as a date and mostly fails
+- when deleting runs, it still says "deleted <full number of rows> rows" instead of the number it is actually deleting
 
 <done features>
 

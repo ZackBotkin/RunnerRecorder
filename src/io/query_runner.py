@@ -80,14 +80,16 @@ class QueryRunner(object):
         """
         self.run_sql(sql_str)
 
-
     ## TODO : the 2023 is hardcoded
     def get_runs(self, run_date=None):
-        sql_str = "SELECT * FROM runs"
         if run_date is not None:
-            sql_str += " WHERE date = '%s'" % run_date
+            sql_str = "SELECT * FROM runs WHERE date = '%s'" % run_date
+            return self.fetch_sql(sql_str)
         else:
             return self.get_runs_for_year(2023)
+
+    def get_all_runs(self):
+        return self.fetch_sql("SELECT * FROM runs")
 
     def get_runs_for_year(self, year):
         next_year = year + 1
@@ -135,6 +137,7 @@ class QueryRunner(object):
         return miles_map
 
 
+    ## TODO: possibly rework this into something more general
     def migrate_all_data_to_new_db(self, runs_by_date, legacy_runs_by_date):
         migrate_database_file_name = "%s\\%s.db" % (
             self.config.get("database_directory"),
