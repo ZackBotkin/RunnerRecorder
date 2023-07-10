@@ -1,6 +1,8 @@
 <bugs>
 
 - whitespace before and after commands should be ignored
+- should cut the % in "all" down to 2 decimal places and then display "%"
+- "routes" page has way too many decimal places
 
 <features>
 
@@ -10,16 +12,13 @@
 - hovering over the bar on the graph should reveal the comment for that run
 - some way to indicate how many miles per pair of shoe
 - some way to adjust/recalculate the stats dynamically (ie: if my goal was X, my avgs would change by Y)
-- the "routes" should not display crazy amounts of decimals, and should have the number of times run for each, should order the routes on number of times run
-    -- also display total miles done with each of these
+- "routes" should be ordered by number of times run, and then also display the miles
 
 <refactors>
 
 - the json structs that get passed around become classes
 - hold the routes in memory, there are several places that i look them up when the function is called
-- the graph functions should live in their own class
 - we no longer really use fancy_print, and fancy_input could be re-worked
-
 
 -----------------------------------------------------------------------------
 
@@ -44,3 +43,4 @@
 
 - big refactor to the interactive code.. a lot more pluggable/modular
 - split the reader writer up into different types (db, filesystem, etc)
+- the graph functions should live in their own class
