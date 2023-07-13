@@ -1,5 +1,14 @@
-- some sort of tree view so that I know where in the menu that i am
+
+
+BUGS
+- the historical graph doesnt stop on the same date as current year
+
+REFACTOR
 - standardize the interactive menu so that i can use it in other projects
+
+
+FEATURES
+- some sort of tree view so that I know where in the menu that i am
 - monthly stats
 - it would be cool if i type "graph bar" for example, it would immediately go into that menu, or like run defaults grand
 - some sort of tab complete, it would be great if i could standardize that in the interactive menu
