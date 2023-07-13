@@ -6,10 +6,8 @@
 
 <features>
 
-- it would be nice to have the historical graph on the same window as the current year
 - maybe some automated export of the database
 - it would be cool to be able to visually distinguish runs that occur on the same day as separate runs (in the graph)
-- hovering over the bar on the graph should reveal the comment for that run
 - some way to indicate how many miles per pair of shoe
 - some way to adjust/recalculate the stats dynamically (ie: if my goal was X, my avgs would change by Y)
 - "routes" should be ordered by number of times run, and then also display the miles
@@ -19,6 +17,7 @@
 - the json structs that get passed around become classes
 - hold the routes in memory, there are several places that i look them up when the function is called
 - we no longer really use fancy_print, and fancy_input could be re-worked
+- update the example config, and the real configs locally
 
 -----------------------------------------------------------------------------
 
@@ -38,6 +37,8 @@
 - editing a run should be a lot easier than it is, no going in and manually updating the sql
 - port the data from 2022 into the database
     -- once this is done i should be able to kill off the filesystem code entirely
+- it would be nice to have the historical graph on the same window as the current year
+- hovering over the bar on the graph should reveal the comment for that run
 
 <done refactors>
 

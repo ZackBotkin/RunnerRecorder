@@ -1,4 +1,7 @@
 import plotly
+import plotly.graph_objects as go
+import pandas
+from plotly.subplots import make_subplots
 from datetime import datetime
 from src.util import get_miles_per_week
 
@@ -8,11 +11,11 @@ class Grapher(object):
         self.runs_by_date = runs_by_date
         self.legacy_runs_by_date = legacy_runs_by_date
 
-    ## TODO : this should most likely be refactored into a "Grapher" class
     def graph_all_runs(self):
 
         x_vals = []
         y_vals = []
+        hover_vals = []
         total_miles = 0
         for date, data_list in self.runs_by_date.items():
             total = 0
@@ -20,10 +23,18 @@ class Grapher(object):
                 total += float(data["miles"])
             x_vals.append(date)
             y_vals.append(total)
+            if "comment" not in data or data["comment"] is None or data["comment"] == "":
+                data["comment"] = "No comment recorded"
+            hover_vals.append(data["comment"])
             total_miles += total
         title_string = "%f miles run" % total_miles
         import plotly.express as px
-        fig = px.bar(x=x_vals, y=y_vals, title=title_string)
+        df = pandas.DataFrame({
+            'x': x_vals,
+            'y': y_vals,
+            'comment': hover_vals
+        })
+        fig = px.bar(df, x='x', y='y', title=title_string, hover_data=['comment'])
         fig.write_html('first_figure.html', auto_open=True)
         return True
 
@@ -56,9 +67,7 @@ class Grapher(object):
             total_miles += total
             max_date = date
         title_string = "%f miles run" % total_miles
-        import plotly.express as px
-        fig = px.bar(x=x_vals, y=y_vals, title=title_string)
-        fig.write_html('first_figure.html', auto_open=True)
+        fig1 = go.Bar(x=x_vals, y=y_vals, name=title_string)
 
         max_date = datetime.fromisoformat(max_date)
         max_month = max_date.month
@@ -83,9 +92,13 @@ class Grapher(object):
             y_vals.append(total)
             total_miles += total
         title_string = "%f miles run" % total_miles
-        import plotly.express as px
-        fig = px.bar(x=x_vals, y=y_vals, title=title_string)
-        fig.write_html('second_figure.html', auto_open=True)
+        fig2 = go.Bar(x=x_vals, y=y_vals, name=title_string)
+
+        fig = make_subplots(rows=2, cols=1)
+        fig.add_trace(fig1, row=1, col=1)
+        fig.add_trace(fig2, row=2, col=1)
+        fig.show()
+
         return True
 
     def weekly_graph(self):

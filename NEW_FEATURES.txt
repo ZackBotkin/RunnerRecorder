@@ -13,3 +13,6 @@
 
 - a script/command that populates the test database for various days
     -- prod --> test copy
+
+- should have ability to record pain/difficulty after run scale of 1-10
+    -- this should then color coat the graph
