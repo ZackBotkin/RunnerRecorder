@@ -59,6 +59,13 @@ def main():
     elif args.interactive:
         interactive = MainMenu(reader)
         interactive.main_loop()
+        if configs.get("always_back_up_database"):
+            answer = "yes"
+        else:
+            print("Back up the database?\n")
+            answer = interactive.fancy_input()
+        if answer in ["yes", "Yes", "ok"]:
+            reader.back_up_database()
     else:
         total = reader.get_total()
         print("%f miles run" % total)
