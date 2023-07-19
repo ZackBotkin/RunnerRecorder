@@ -11,12 +11,12 @@ class GraphMenu(InteractiveMenu):
 
         GRAPH_CHOICES = ['bar', 'line', 'historical', 'weeks', 'routes', 'miles_per_route', 'routes_pie']
         print("Which graph type would you like? (bar, line, historical, weeks, routes, miles_per_route, routes_pie)\n")
-        answer = self.fancy_input(" ")
+        answer = self.fancy_input()
         answer_is_in_choices = answer in GRAPH_CHOICES
         while not answer_is_in_choices:
             print("That isn't a valid choice")
             print("Which graph type would you like? (bar, line, historical, weeks, routes, miles_per_route, routes_pie)\n")
-            answer = self.fancy_input(" ")
+            answer = self.fancy_input()
             answer_is_in_choices = answer in GRAPH_CHOICES
 
         if answer == "bar":

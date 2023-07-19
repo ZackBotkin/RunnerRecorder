@@ -25,3 +25,15 @@ FEATURES
 
 - should have ability to record pain/difficulty after run scale of 1-10
     -- this should then color coat the graph
+
+- i want the ability to do "historical" for every type of graph
+
+- graphs should also have a menu similar to the other stuff, right now it goes back to the main menu after selecting a graph
+
+- there should be more "acceptable" answers for each choice
+    -- ie: graphs --> (graph, graphs, chart, charts)
+    --     all --> (all, list)
+    --     stats --> (stat, stats, data, etc)
+    -- this could be customizable via the configs
+
+- should be able to pip install the module and run it very simply, no more downloading the repo and setting the python path... i don't know what's involved in this or if it works like i'm thinking..

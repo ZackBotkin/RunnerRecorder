@@ -20,13 +20,13 @@ class AddMenu(InteractiveMenu):
 
     def main_loop(self):
         print("What is the name of the new route?")
-        new_route_name = self.fancy_input(" ")
+        new_route_name = self.fancy_input()
         print("How many miles is this route?")
-        new_route_distance = self.fancy_input(" ")
+        new_route_distance = self.fancy_input()
         print("Enter a description for this route")
-        new_route_description = self.fancy_input(" ")
+        new_route_description = self.fancy_input()
         print("%s %s miles %s ... correct?" % (new_route_name, new_route_distance, new_route_description))
-        answer = self.fancy_input(" ")
+        answer = self.fancy_input()
         if answer in ["yes", "Yes", "correct"]:
             self.manager.add_route(new_route_name, new_route_distance, new_route_description)
             self.manager.reload()

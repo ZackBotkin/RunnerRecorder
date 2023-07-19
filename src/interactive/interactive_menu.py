@@ -5,9 +5,6 @@ class InteractiveMenu(object):
         self.manager = manager
         self.sub_menu_modules = []
 
-    def fancy_print(self, text):
-        print("%s %s" % (self.manager.config.get("line_start"), text))
-
     def menu_print(self, items):
         print("\n")
         for item in items:
@@ -18,8 +15,12 @@ class InteractiveMenu(object):
         items.append("Exit")
         self.menu_print(items)
 
-    def fancy_input(self, text):
-        answer = input("%s %s" % (self.manager.config.get("line_start"), text))
+    def fancy_input(self, text=None):
+        answer = None
+        if text is None:
+            answer = input("%s " % (self.manager.config.get("line_start")))
+        else:
+            answer = input("%s %s" % (self.manager.config.get("line_start"), text))
         answer = answer.strip()
         return answer
 
@@ -54,7 +55,7 @@ class InteractiveMenu(object):
             else:
                 prompt = '%s, Back, Exit' % sub_menu_as_str
             print("%s" % prompt)
-            answer = self.fancy_input("")
+            answer = self.fancy_input()
             pre_capitalized_answer = answer
             answer = answer.capitalize()
             if answer in sub_menu_mapping:

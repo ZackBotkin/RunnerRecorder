@@ -95,7 +95,7 @@ class DeleteRuns(InteractiveMenu):
         return "Runs"
     def main_loop(self):
         print("For which date? (YYYY-MM-DD) (hit enter to delete everything)")
-        run_date = self.fancy_input(" ")
+        run_date = self.fancy_input()
         if run_date == '':
             self.manager.delete_runs()
         else:

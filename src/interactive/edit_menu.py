@@ -10,7 +10,7 @@ class EditMenu(InteractiveMenu):
         print("Which date (YYYY-MM-DD) do you want to edit?\n")
         print("(currently cannot do this for dates with more than one run)\n")
         print("Back, Exit\n")
-        run_date = self.fancy_input(" ")
+        run_date = self.fancy_input()
         if run_date in ['Back', 'back']:
             return
         if run_date in ['Exit', 'exit']:
@@ -22,13 +22,13 @@ class EditMenu(InteractiveMenu):
             print("More than one run on date %s currently found" % run_date)
         else:
             print("New route name?")
-            new_route_name = self.fancy_input(" ")
+            new_route_name = self.fancy_input()
             print("New route distance?")
-            new_route_distance = self.fancy_input(" ")
+            new_route_distance = self.fancy_input()
             print("New route comment?")
-            new_route_comment = self.fancy_input(" ")
+            new_route_comment = self.fancy_input()
             print("%s %s %s .... correct?" % (new_route_name, new_route_distance, new_route_comment))
-            answer = self.fancy_input(" ")
+            answer = self.fancy_input()
             if answer in ["yes", "Yes", "correct"]:
                 self.manager.edit_run(run_date, new_route_name, new_route_distance, new_route_comment)
                 self.manager.reload()

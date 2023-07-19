@@ -14,9 +14,7 @@
 
 <refactors>
 
-- the json structs that get passed around become classes
 - hold the routes in memory, there are several places that i look them up when the function is called
-- we no longer really use fancy_print, and fancy_input could be re-worked
 - update the example config, and the real configs locally
 
 -----------------------------------------------------------------------------
@@ -45,3 +43,4 @@
 - big refactor to the interactive code.. a lot more pluggable/modular
 - split the reader writer up into different types (db, filesystem, etc)
 - the graph functions should live in their own class
+- we no longer really use fancy_print, and fancy_input could be re-worked
