@@ -1,7 +1,6 @@
 <bugs>
 
 - whitespace before and after commands should be ignored
-- should cut the % in "all" down to 2 decimal places and then display "%"
 - "routes" page has way too many decimal places
 
 <features>
@@ -27,6 +26,7 @@
     -- I also got this one for free through the refactor
 - in the edit menu, there needs to be a "back/exit" button, right now it just accepts whatever input it is given as a date and mostly fails
 - when deleting runs, it still says "deleted <full number of rows> rows" instead of the number it is actually deleting
+- should cut the % in "all" down to 2 decimal places and then display "%"
 
 <done features>
 

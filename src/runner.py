@@ -59,7 +59,7 @@ class RunnerReader(object):
         for date, data_list in self.runs_by_date.items():
             for data in data_list:
                 total_so_far += float(data["miles"])
-                percentage_of_goal = (total_so_far/goal) * 100
+                percentage_of_goal = "{:.2f}".format((total_so_far/goal) * 100)
                 comment = ""
                 if "comment" in data:
                     comment = data["comment"]
@@ -69,7 +69,7 @@ class RunnerReader(object):
                         data['miles'],
                         data['route_name'],
                         total_so_far,
-                        percentage_of_goal,
+                        "%s %s" % (percentage_of_goal, "%"),
                         comment
                     )
                 )
