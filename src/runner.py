@@ -5,14 +5,6 @@ from src.io.filesystem_reader_writer import FileSystemReaderWriter
 from src.graph.grapher import Grapher
 
 #
-#   TODO : in general refactoring idea
-#       - interactive --> get user input
-#       - runner --> "manager" of the data, deals with classes, not database
-#       - reader_writer --> talks to the database, in theory, you could swap this out
-#               and the runner would be none the wiser
-#
-
-#
 #   TODO : this should probably now be re-named manager
 #
 
@@ -218,8 +210,6 @@ class RunnerReader(object):
     def read_data_from_migrated_db(self):
         QueryRunner(self.config).read_migrate_database()
 
-
-
     #
     #   Graph methods
     #
@@ -243,3 +233,25 @@ class RunnerReader(object):
 
     def miles_per_route_graph(self):
         Grapher(self.runs_by_date, self.legacy_runs_by_date).miles_per_route_graph()
+
+
+    #
+    #   Back up the database
+    #
+    def back_up_database(self):
+        if self.config.get("enable_db_backup"):
+            from emailer.src.emailer import EmailerCreds, Emailer
+            creds = EmailerCreds(self.config.get('emailer_creds_file'))
+            emailer = Emailer(creds)
+            database_file_name = "%s\\%s.db" % (
+                self.config.get("database_directory"),
+                self.config.get("database_name")
+            )
+            emailer.send_file(
+                self.config.get("backups_email"),
+                self.config.get("backups_email"),
+                database_file_name
+            )
+            print("Backup of database file sent to %s" % self.config.get("backups_email"))
+        else:
+            print("DB backup not enabled! enable it in the configs")

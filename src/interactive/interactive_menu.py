@@ -69,4 +69,9 @@ class InteractiveMenu(object):
                 pass
             else:
                 print("\"%s\" is not a valid choice. Please choose one of the following options" % pre_capitalized_answer)
+
+        print("Back up the database?\n")
+        answer = self.fancy_input()
+        if answer in ["yes", "Yes", "ok"]:
+            self.manager.back_up_database()
         
