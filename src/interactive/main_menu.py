@@ -7,6 +7,7 @@ from src.interactive.record_menu import RecordMenu
 from src.interactive.routes_menu import RoutesMenu
 from src.interactive.sql_menu import SqlMenu
 from src.interactive.stats_menu import StatsMenu
+from src.interactive.shoes_menu import ShoesMenu
 
 class MainMenu(InteractiveMenu):
 
@@ -18,7 +19,8 @@ class MainMenu(InteractiveMenu):
             AllMenu(manager),
             StatsMenu(manager),
             GraphMenu(manager),
-            RoutesMenu(manager)
+            RoutesMenu(manager),
+            ShoesMenu(manager)
         ] 
         if manager.config.get('enable_direct_sql'):
             self.sub_menu_modules.append(SqlMenu(manager))

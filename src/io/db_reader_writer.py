@@ -20,6 +20,10 @@ class DbReaderWriter(ReaderWriter):
             ## ignore if the table already exists
             except sqlite3.OperationalError:
                 pass
+            try:
+                self.query_runner.create_shoes_table()
+            except sqlite3.OperationalError:
+                pass
 
     ## TODO : have this return a class/classes
     def get_runs(self, run_date=None):
@@ -94,3 +98,10 @@ class DbReaderWriter(ReaderWriter):
 
     def miles_map(self):
         return self.query_runner.miles_map()
+
+    def add_shoe(self, nickname, start_date, brand):
+        self.query_runner.insert_shoe(nickname, start_date, brand)
+
+    def get_shoes(self):
+        shoes = self.query_runner.get_shoes()
+        return shoes

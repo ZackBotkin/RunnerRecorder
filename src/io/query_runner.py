@@ -48,6 +48,10 @@ class QueryRunner(object):
         sql_str = "CREATE TABLE routes(route_name, miles, description)"
         self.run_sql(sql_str)
 
+    def create_shoes_table(self):
+        sql_str = "CREATE TABLE shoes(shoe_name VARCHAR, start_date DATE, shoe_brand VARCHAR)"
+        self.run_sql(sql_str)
+
     def delete_data_from_runs_table(self, run_date=None):
         sql_str = 'DELETE FROM runs'
         if run_date is not None:
@@ -136,7 +140,6 @@ class QueryRunner(object):
             miles_map[route[0]] = float(route[1]) ## TODO -- again a little janky
         return miles_map
 
-
     ## TODO: possibly rework this into something more general
     def migrate_all_data_to_new_db(self, runs_by_date, legacy_runs_by_date):
         migrate_database_file_name = "%s\\%s.db" % (
@@ -195,5 +198,12 @@ class QueryRunner(object):
         results = query.fetchall()
         for result in results:
             print(result)
+
+    def insert_shoe(self, nickname, start_date, brand):
+        sql_str = "INSERT INTO shoes VALUES ('%s', '%s', '%s')" % (nickname, start_date, brand)
+        self.run_sql(sql_str)
+
+    def get_shoes(self):
+        return self.fetch_sql("SELECT * FROM shoes")
 
 

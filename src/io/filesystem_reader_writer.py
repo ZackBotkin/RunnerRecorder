@@ -67,6 +67,13 @@ class FileSystemReaderWriter(ReaderWriter):
         #raise Exception("This is not implemented and probably won't be")
         print("Warning, not updating the file system")
 
+    def add_shoe(self, nickname, start_date, brand):
+        print("Warning, not updating the file system")
+
+    def get_shoes(self):
+        print("This is not implemented and probably won't be")
+        return []
+
     ## private methods
 
     def todays_file_name(self, date_str=None, individualizer=None):

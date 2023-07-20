@@ -26,4 +26,10 @@ class ReaderWriter(object):
     def add_route(self, route_name, distance_in_miles, description):
         raise Exception("Not implemented")
 
+    def add_shoe(self, nickname, start_date, brand):
+        raise Exception("Not implemented")
+
+    def get_shoes(self):
+        raise Exception("Not implemented")
+
 

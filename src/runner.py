@@ -150,7 +150,10 @@ class RunnerReader(object):
         print("\n")
         return True
 
-    ## TODO : eventually get rid of these, they do not belong on the maanger
+
+    #
+    #   sql methods for troubleshooting only
+    #
     def run_sql(self):
         raise Exception("Not implemented")
 
@@ -255,3 +258,15 @@ class RunnerReader(object):
             print("Backup of database file sent to %s" % self.config.get("backups_email"))
         else:
             print("DB backup not enabled! enable it in the configs")
+
+    #
+    #   Shoes
+    #
+    def add_shoe(self, nickname, start_date, brand):
+        for output_source in self.output_sources:
+            output_source.add_shoe(nickname, start_date, brand)
+
+    def print_all_shoes(self):
+        shoes = self.input_source.get_shoes()
+        for shoe in shoes:
+            print(shoe)

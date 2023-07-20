@@ -59,11 +59,14 @@ def main():
     elif args.interactive:
         interactive = MainMenu(reader)
         interactive.main_loop()
-        if configs.get("always_back_up_database"):
+        if configs.get("never_back_up_database") == True:
+            answer = "no"
+        elif configs.get("always_back_up_database") == True:
             answer = "yes"
         else:
             print("Back up the database?\n")
             answer = interactive.fancy_input()
+
         if answer in ["yes", "Yes", "ok"]:
             reader.back_up_database()
     else:
