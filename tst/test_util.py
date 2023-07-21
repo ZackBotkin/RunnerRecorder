@@ -3,7 +3,8 @@ import datetime
 
 from src.util import (
     get_weeks,
-    get_miles_per_week
+    get_miles_per_week,
+    get_miles_since_date_inclusive
 )
 
 class Tests(unittest.TestCase):
@@ -63,6 +64,31 @@ class Tests(unittest.TestCase):
         third_week = miles_per_week[2]
         self.assertEqual(third_week.start_date, datetime.datetime(2023, 1, 15, 0, 0))
         self.assertEqual(third_week.total_miles, 0)
+
+
+    def test_get_miles_since(self):
+
+        runs_by_date = {
+            "2023-01-01" : [{"miles": 10}],
+            "2023-01-02" : [{"miles": 10}],
+            "2023-01-03" : [{"miles": 10}, {"miles": 10}],
+            "2023-01-05" : [{"miles": 10}]
+        }
+
+        jan5 = get_miles_since_date_inclusive(runs_by_date, "2023-01-05")
+        self.assertEqual(jan5, 10)
+
+        jan4 = get_miles_since_date_inclusive(runs_by_date, "2023-01-04")
+        self.assertEqual(jan4, 10)
+
+        jan3 = get_miles_since_date_inclusive(runs_by_date, "2023-01-03")
+        self.assertEqual(jan3, 30)
+
+        jan2 = get_miles_since_date_inclusive(runs_by_date, "2023-01-02")
+        self.assertEqual(jan2, 40)
+
+        jan1 = get_miles_since_date_inclusive(runs_by_date, "2023-01-01")
+        self.assertEqual(jan1, 50)
 
 
 

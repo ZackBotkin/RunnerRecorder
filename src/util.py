@@ -57,3 +57,22 @@ def get_weeks(year, start_of_week_index=START_OF_WEEK_INDEX):
         weeks.append(week)
 
     return weeks
+
+
+def get_miles_since_date_inclusive(runs_by_date, since_date_str):
+    all_dates = []
+    total_miles = 0
+    for date_str in runs_by_date.keys():
+        as_date = datetime.datetime.strptime(date_str, "%Y-%m-%d")
+        all_dates.append(as_date)
+    all_dates.sort()
+    all_dates.reverse()
+    since_date = datetime.datetime.strptime(since_date_str, "%Y-%m-%d")
+    for date in all_dates:
+        if date >= since_date:
+            runs = runs_by_date[date.strftime("%Y-%m-%d")]
+            for run in runs:
+                total_miles += run["miles"]
+        else:
+            break
+    return total_miles
