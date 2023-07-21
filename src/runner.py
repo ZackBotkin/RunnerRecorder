@@ -1,5 +1,5 @@
 from datetime import datetime
-from src.util import get_miles_per_week
+from src.util import get_miles_per_week, get_miles_in_date_range_inclusive
 from src.io.query_runner import QueryRunner
 from src.io.filesystem_reader_writer import FileSystemReaderWriter
 from src.graph.grapher import Grapher
@@ -268,5 +268,21 @@ class RunnerReader(object):
 
     def print_all_shoes(self):
         shoes = self.input_source.get_shoes()
+        table = [('Nickname', 'Start Date', 'Brand', 'Miles Run')]
         for shoe in shoes:
-            print(shoe)
+            nickname = shoe[0]
+            since_date = shoe[1]
+            brand = shoe[2]
+            miles_in_shoe = get_miles_in_date_range_inclusive(self.runs_by_date, since_date)
+            table.append(
+                (
+                    nickname,
+                    since_date,
+                    brand,
+                    miles_in_shoe
+                )
+            )
+        import pandas as pd
+        df = pd.DataFrame(table)
+        print(df.to_string(index=False))
+

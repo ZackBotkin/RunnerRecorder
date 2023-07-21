@@ -58,17 +58,26 @@ def get_weeks(year, start_of_week_index=START_OF_WEEK_INDEX):
 
     return weeks
 
-
-def get_miles_since_date_inclusive(runs_by_date, since_date_str):
+def get_sorted_dates(runs_by_date):
     all_dates = []
-    total_miles = 0
     for date_str in runs_by_date.keys():
         as_date = datetime.datetime.strptime(date_str, "%Y-%m-%d")
         all_dates.append(as_date)
     all_dates.sort()
-    all_dates.reverse()
+    return all_dates
+
+
+def get_reverse_sorted_dates(runs_by_date):
+    sorted_dates = get_sorted_dates(runs_by_date)
+    sorted_dates.reverse()
+    return sorted_dates
+
+
+def get_miles_since_date_inclusive(runs_by_date, since_date_str):
+    total_miles = 0
     since_date = datetime.datetime.strptime(since_date_str, "%Y-%m-%d")
-    for date in all_dates:
+    reverse_sorted_dates = get_reverse_sorted_dates(runs_by_date)
+    for date in reverse_sorted_dates:
         if date >= since_date:
             runs = runs_by_date[date.strftime("%Y-%m-%d")]
             for run in runs:
@@ -76,3 +85,29 @@ def get_miles_since_date_inclusive(runs_by_date, since_date_str):
         else:
             break
     return total_miles
+
+
+def get_miles_in_date_range_inclusive(runs_by_date, since_date_str, until_date_str=None):
+    if until_date_str is None:
+        return get_miles_since_date_inclusive(runs_by_date, since_date_str)
+    else:
+        reverse_sorted_dates = get_reverse_sorted_dates(runs_by_date)
+
+        since_date = datetime.datetime.strptime(since_date_str, "%Y-%m-%d")
+        until_date = datetime.datetime.strptime(until_date_str, "%Y-%m-%d")
+
+        total_miles = 0
+
+        for date in reverse_sorted_dates:
+            if date < since_date:
+                break
+            elif date >= since_date and date <= until_date:
+                runs = runs_by_date[date.strftime("%Y-%m-%d")]
+                for run in runs:
+                    total_miles += run["miles"]
+
+            ## > until date, just keep going through in this case
+            else:
+                pass
+
+        return total_miles

@@ -4,7 +4,8 @@ import datetime
 from src.util import (
     get_weeks,
     get_miles_per_week,
-    get_miles_since_date_inclusive
+    get_miles_since_date_inclusive,
+    get_miles_in_date_range_inclusive
 )
 
 class Tests(unittest.TestCase):
@@ -91,6 +92,29 @@ class Tests(unittest.TestCase):
         self.assertEqual(jan1, 50)
 
 
+    def test_get_miles_in_date_range(self):
+
+        runs_by_date = {
+            "2023-01-01" : [{"miles": 10}],
+            "2023-01-02" : [{"miles": 10}],
+            "2023-01-03" : [{"miles": 10}, {"miles": 10}],
+            "2023-01-05" : [{"miles": 10}]
+        }
+
+        whole_range = get_miles_in_date_range_inclusive(runs_by_date, "2023-01-01")
+        self.assertEqual(whole_range, 50)
+
+        whole_range = get_miles_in_date_range_inclusive(runs_by_date, "2023-01-01", "2023-01-10")
+        self.assertEqual(whole_range, 50)
+
+        partial_range = get_miles_in_date_range_inclusive(runs_by_date, "2023-01-01", "2023-01-03")
+        self.assertEqual(partial_range, 40)
+
+        partial_range = get_miles_in_date_range_inclusive(runs_by_date, "2023-01-03", "2023-01-05")
+        self.assertEqual(partial_range, 30)
+
+        bad_range = get_miles_in_date_range_inclusive(runs_by_date, "2023-01-05", "2023-01-01")
+        self.assertEqual(bad_range, 0)
 
 if __name__ == '__main__':
     unittest.main()
