@@ -79,6 +79,8 @@ class RunnerReader(object):
 
     def print_all_routes(self):
         routes = self.get_routes()
+
+        ## TODO get this working for real
         headers = ('Route Name', 'Distance', 'Description', 'Total Miles', 'Total Runs')
         all_data = []
         index = []
@@ -107,15 +109,16 @@ class RunnerReader(object):
                 total_miles = by_route_total_miles[route_name]
             if route_name in by_route_total_runs:
                 total_runs = by_route_total_runs[route_name]
-            all_data.append(
-                (
+
+            row = (
                     route_name,
-                    "%s miles" % "{:.2f}".format(route['miles']),
                     route['description'],
+                    "%s miles" % "{:.2f}".format(route['miles']),
                     total_miles,
                     total_runs
                 )
-            )
+
+            all_data.append(row)
 
         def myFunc(val):
             return val[3]
