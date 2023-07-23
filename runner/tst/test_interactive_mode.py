@@ -1,7 +1,7 @@
 import unittest
-from src.interactive import InteractiveRunner
-from src.runner import RunnerReader
-from src.reader_writer import ReaderWriter
+from runner.src.interactive import InteractiveRunner
+from runner.src.runner import RunnerReader
+from runner.src.reader_writer import ReaderWriter
 from config.config import Configs
 
 class Tests(unittest.TestCase):

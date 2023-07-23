@@ -1,7 +1,7 @@
 import unittest
 import datetime
 
-from src.util import (
+from runner.src.util import (
     get_weeks,
     get_miles_per_week,
     get_miles_since_date_inclusive,

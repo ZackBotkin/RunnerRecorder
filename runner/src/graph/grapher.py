@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 import pandas
 from plotly.subplots import make_subplots
 from datetime import datetime
-from src.util import get_miles_per_week
+from runner.src.util import get_miles_per_week
 
 class Grapher(object):
 

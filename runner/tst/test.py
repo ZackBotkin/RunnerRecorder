@@ -1,10 +1,10 @@
 import unittest
 import datetime
-from src.runner import RunnerReader
-from src.reader_writer import ReaderWriter
+from runner.src.runner import RunnerReader
+from runner.src.reader_writer import ReaderWriter
 from config.config import Configs
 
-from src.main import Week, construct_weeks, get_start_of_week
+from runner.src.main import Week, construct_weeks, get_start_of_week
 
 class MockConfig(object):
 

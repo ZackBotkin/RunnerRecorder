@@ -1,12 +1,12 @@
 import argparse
 from datetime import datetime, timedelta
-from src.runner import RunnerReader
-from src.interactive.main_menu import MainMenu
-from src.io.reader_writer import ReaderWriter
-from src.io.db_reader_writer import DbReaderWriter
-from src.io.filesystem_reader_writer import FileSystemReaderWriter
-from src.io.query_runner import QueryRunner
-from config.config import Configs
+from runner.src.manager import RunnerReader
+from runner.src.interactive.main_menu import MainMenu
+from runner.src.io.reader_writer import ReaderWriter
+from runner.src.io.db_reader_writer import DbReaderWriter
+from runner.src.io.filesystem_reader_writer import FileSystemReaderWriter
+from runner.src.io.query_runner import QueryRunner
+from runner.config.config import Configs
 
 
 def main():

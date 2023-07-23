@@ -1,6 +1,6 @@
 
-from src.graph.grapher import Grapher
-from src.interactive.interactive_menu import InteractiveMenu
+from runner.src.graph.grapher import Grapher
+from runner.src.interactive.interactive_menu import InteractiveMenu
 
 class GraphMenu(InteractiveMenu):
 

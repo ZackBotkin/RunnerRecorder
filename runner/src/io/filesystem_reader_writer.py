@@ -1,6 +1,6 @@
 import os
 import json
-from src.io.reader_writer import ReaderWriter
+from runner.src.io.reader_writer import ReaderWriter
 
 class FileSystemReaderWriter(ReaderWriter):
 

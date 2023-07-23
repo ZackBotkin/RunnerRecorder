@@ -1,6 +1,6 @@
 import sqlite3
-from src.io.reader_writer import ReaderWriter
-from src.io.query_runner import QueryRunner
+from runner.src.io.reader_writer import ReaderWriter
+from runner.src.io.query_runner import QueryRunner
 
 class DbReaderWriter(ReaderWriter):
 

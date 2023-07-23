@@ -1,6 +1,5 @@
 import datetime
 
-
 SUNDAY_INDEX = 6
 START_OF_WEEK_INDEX = SUNDAY_INDEX
 

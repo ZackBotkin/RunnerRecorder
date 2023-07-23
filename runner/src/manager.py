@@ -1,8 +1,8 @@
 from datetime import datetime
-from src.util import get_miles_per_week, get_miles_in_date_range_inclusive
-from src.io.query_runner import QueryRunner
-from src.io.filesystem_reader_writer import FileSystemReaderWriter
-from src.graph.grapher import Grapher
+from runner.src.util import get_miles_per_week, get_miles_in_date_range_inclusive
+from runner.src.io.query_runner import QueryRunner
+from runner.src.io.filesystem_reader_writer import FileSystemReaderWriter
+from runner.src.graph.grapher import Grapher
 
 #
 #   TODO : this should probably now be re-named manager
