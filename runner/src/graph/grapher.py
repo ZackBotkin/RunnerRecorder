@@ -13,28 +13,40 @@ class Grapher(object):
 
     def graph_all_runs(self):
 
+        COLOR_MAP = {
+            1: 'blue',
+            2: 'green',
+            3: 'red'
+        }
+
         x_vals = []
         y_vals = []
+        colors = []
         hover_vals = []
         total_miles = 0
         for date, data_list in self.runs_by_date.items():
             total = 0
+            color_index = 1
             for data in data_list:
                 total += float(data["miles"])
-            x_vals.append(date)
-            y_vals.append(total)
-            if "comment" not in data or data["comment"] is None or data["comment"] == "":
-                data["comment"] = "No comment recorded"
-            hover_vals.append(data["comment"])
+                colors.append(COLOR_MAP[color_index])
+                x_vals.append(date)
+                y_vals.append(data["miles"])
+                if "comment" not in data or data["comment"] is None or data["comment"] == "":
+                    data["comment"] = "No comment recorded"
+                hover_vals.append(data["comment"])
+                color_index += 1
+
             total_miles += total
         title_string = "%f miles run" % total_miles
         import plotly.express as px
         df = pandas.DataFrame({
             'x': x_vals,
             'y': y_vals,
-            'comment': hover_vals
+            'comment': hover_vals,
+            'colors': colors
         })
-        fig = px.bar(df, x='x', y='y', title=title_string, hover_data=['comment'])
+        fig = px.bar(df, x='x', y='y', color='colors', title=title_string, hover_data=['comment'])
         fig.write_html('first_figure.html', auto_open=True)
         return True
 

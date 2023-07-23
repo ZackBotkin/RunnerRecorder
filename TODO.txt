@@ -5,16 +5,11 @@
 
 <features>
 
-- it would be cool to be able to visually distinguish runs that occur on the same day as separate runs (in the graph)
-- some way to adjust/recalculate the stats dynamically (ie: if my goal was X, my avgs would change by Y)
-- "routes" should be ordered by number of times run, and then also display the miles
-
 <refactors>
 
 - hold the routes in memory, there are several places that i look them up when the function is called
 - update the example config, and the real configs locally
 - update the README for how to run
-- unfortunately, it looks like for my modules to import correctly, i need to have 'src' one level down, at least if i am going to continue with that pattern
 
 -----------------------------------------------------------------------------
 
@@ -39,6 +34,8 @@
 - hovering over the bar on the graph should reveal the comment for that run
 - maybe some automated export of the database
 - some way to indicate how many miles per pair of shoe
+- it would be cool to be able to visually distinguish runs that occur on the same day as separate runs (in the graph)
+- "routes" should be ordered by number of times run, and then also display the miles
 
 <done refactors>
 
@@ -46,3 +43,10 @@
 - split the reader writer up into different types (db, filesystem, etc)
 - the graph functions should live in their own class
 - we no longer really use fancy_print, and fancy_input could be re-worked
+- unfortunately, it looks like for my modules to import correctly, i need to have 'src' one level down, at least if i am going to continue with that pattern
+
+<abandoned>
+
+- some way to adjust/recalculate the stats dynamically (ie: if my goal was X, my avgs would change by Y)
+    -- im gonna push this to 3.0 with the redesign of the stats menu
+    -- this will be accomplished through the stretch goal

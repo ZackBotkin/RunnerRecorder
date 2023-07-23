@@ -79,16 +79,48 @@ class RunnerReader(object):
 
     def print_all_routes(self):
         routes = self.get_routes()
-        all_data = [('Route Name', 'Distance', 'Description')]
+        headers = ('Route Name', 'Distance', 'Description', 'Total Miles', 'Total Runs')
+        all_data = []
+        index = []
+        current_index = 1
+
+        by_route_total_miles = {}
+        by_route_total_runs = {}
+
+        for date, data_list in self.runs_by_date.items():
+            for data in data_list:
+                route_name = data["route_name"]
+                if route_name not in by_route_total_miles:
+                    by_route_total_miles[route_name] = 0
+                by_route_total_miles[route_name] += data["miles"]
+
+                if route_name not in by_route_total_runs:
+                    by_route_total_runs[route_name] = 0
+                by_route_total_runs[route_name] += 1
+
         import pandas as pd
         for route in routes:
+            total_miles = 0
+            total_runs = 0
+            route_name = route['route_name']
+            if route_name in by_route_total_miles:
+                total_miles = by_route_total_miles[route_name]
+            if route_name in by_route_total_runs:
+                total_runs = by_route_total_runs[route_name]
             all_data.append(
                 (
-                    route['route_name'],
-                    "%f miles" % route['miles'],
-                    route['description']
+                    route_name,
+                    "%s miles" % "{:.2f}".format(route['miles']),
+                    route['description'],
+                    total_miles,
+                    total_runs
                 )
             )
+
+        def myFunc(val):
+            return val[3]
+
+        all_data.sort(reverse=True, key=myFunc)
         df = pd.DataFrame(all_data)
         print(df.to_string(index=False))
         return True
