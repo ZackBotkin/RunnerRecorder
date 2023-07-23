@@ -6,7 +6,6 @@
 <features>
 
 - it would be cool to be able to visually distinguish runs that occur on the same day as separate runs (in the graph)
-- some way to indicate how many miles per pair of shoe
 - some way to adjust/recalculate the stats dynamically (ie: if my goal was X, my avgs would change by Y)
 - "routes" should be ordered by number of times run, and then also display the miles
 
@@ -39,6 +38,7 @@
 - it would be nice to have the historical graph on the same window as the current year
 - hovering over the bar on the graph should reveal the comment for that run
 - maybe some automated export of the database
+- some way to indicate how many miles per pair of shoe
 
 <done refactors>
 
