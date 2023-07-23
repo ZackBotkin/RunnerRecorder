@@ -49,7 +49,7 @@ class QueryRunner(object):
         self.run_sql(sql_str)
 
     def create_shoes_table(self):
-        sql_str = "CREATE TABLE shoes(shoe_name VARCHAR, start_date DATE, shoe_brand VARCHAR)"
+        sql_str = "CREATE TABLE shoes(shoe_name VARCHAR, start_date DATE, shoe_brand VARCHAR, end_date DATE)"
         self.run_sql(sql_str)
 
     def delete_data_from_runs_table(self, run_date=None):
@@ -61,11 +61,20 @@ class QueryRunner(object):
     def delete_data_from_routes_table(self):
         self.run_sql('DELETE FROM routes')
 
+    def delete_data_from_shoes_table(self, nickname=None):
+        sql_str = "DELETE FROM shoes"
+        if nickname is not None:
+            sql_str += " WHERE nickname = '%s'" % nickname
+        self.run_sql(sql_str)
+
     def drop_runs_table(self):
         self.run_sql('DROP TABLE runs')
 
     def drop_routes_table(self):
         self.run_sql('DROP TABLE routes')
+
+    def drop_shoes_table(self):
+        self.run_sql('DROP TABLE shoes')
 
     def insert_initial_route_data(self):
         sql_str = """
@@ -199,11 +208,19 @@ class QueryRunner(object):
         for result in results:
             print(result)
 
-    def insert_shoe(self, nickname, start_date, brand):
-        sql_str = "INSERT INTO shoes VALUES ('%s', '%s', '%s')" % (nickname, start_date, brand)
+    def insert_shoe(self, nickname, start_date, brand, end_date=None):
+        if end_date is None:
+            sql_str = "INSERT INTO shoes ('shoe_name', 'start_date', 'shoe_brand') VALUES ('%s', '%s', '%s')" % (nickname, start_date, brand)
+        else:
+            sql_str = "INSERT INTO shoes VALUES ('%s', '%s', '%s', '%s')" % (nickname, start_date, brand, end_date)
         self.run_sql(sql_str)
 
     def get_shoes(self):
         return self.fetch_sql("SELECT * FROM shoes")
 
+    def get_shoe_with_nickname(self, nickname):
+        return self.fetch_sql("SELECT * FROM shoes WHERE shoe_name = '%s'" % nickname)
 
+    def retire_existing_shoe(self, nickname, retire_date):
+        sql_str = "UPDATE shoes SET end_date = '%s' WHERE shoe_name = '%s'" % (retire_date, nickname)
+        self.run_sql(sql_str)

@@ -191,18 +191,28 @@ class RunnerReader(object):
         print("Deleting %d rows from 'routes' table" % routes_count)
         QueryRunner(self.config).delete_data_from_routes_table()
 
+    def delete_shoes(self):
+        results = QueryRunner(self.config).get_shoes()
+        shoes_count = len(results)
+        print("Deleting %d rows from 'shoes' table" % shoes_count)
+        QueryRunner(self.config).delete_data_from_shoes_table()
+
     def migrate_data(self):
         legacy_runs = self.legacy_runs_by_date
         print("Saving %d rows" % len(legacy_runs))
         QueryRunner(self.config).migrate_data(legacy_runs)
 
     def drop_runs(self):
-        print("Dropping 'runs' table'")
+        print("Dropping 'runs' table")
         QueryRunner(self.config).drop_runs_table()
 
     def drop_routes(self):
-        print("Dropping 'routes' table'")
+        print("Dropping 'routes' table")
         QueryRunner(self.config).drop_routes_table()
+
+    def drop_shoes_table(self):
+        print("Dropping 'shoes' table")
+        QueryRunner(self.config).drop_shoes_table()
 
     def migrate_all_data_to_new_db(self):
         print("Migrating all data over to the new Db")
@@ -262,23 +272,34 @@ class RunnerReader(object):
     #
     #   Shoes
     #
-    def add_shoe(self, nickname, start_date, brand):
+    def add_shoe(self, nickname, start_date, brand, end_date=None):
         for output_source in self.output_sources:
-            output_source.add_shoe(nickname, start_date, brand)
+            output_source.add_shoe(nickname, start_date, brand, end_date=end_date)
+
+    def get_shoe_with_nickname(self, nickname):
+        shoe = self.input_source.get_shoe_with_nickname(nickname)
+        return shoe
+
+    def retire_existing_shoe(self, nickname, retire_date):
+        for output_source in self.output_sources:
+            output_source.retire_existing_shoe(nickname, retire_date)
+        return None
 
     def print_all_shoes(self):
         shoes = self.input_source.get_shoes()
-        table = [('Nickname', 'Start Date', 'Brand', 'Miles Run')]
+        table = [('Nickname', 'Start Date', 'Brand', 'Retire Date', 'Miles Run')]
         for shoe in shoes:
             nickname = shoe[0]
             since_date = shoe[1]
             brand = shoe[2]
+            retire_date = shoe[3]
             miles_in_shoe = get_miles_in_date_range_inclusive(self.runs_by_date, since_date)
             table.append(
                 (
                     nickname,
                     since_date,
                     brand,
+                    retire_date,
                     miles_in_shoe
                 )
             )

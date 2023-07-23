@@ -99,9 +99,16 @@ class DbReaderWriter(ReaderWriter):
     def miles_map(self):
         return self.query_runner.miles_map()
 
-    def add_shoe(self, nickname, start_date, brand):
-        self.query_runner.insert_shoe(nickname, start_date, brand)
+    def add_shoe(self, nickname, start_date, brand, end_date=None):
+        self.query_runner.insert_shoe(nickname, start_date, brand, end_date=end_date)
 
     def get_shoes(self):
         shoes = self.query_runner.get_shoes()
         return shoes
+
+    def get_shoe_with_nickname(self, nickname):
+        shoe = self.query_runner.get_shoe_with_nickname(nickname)
+        return shoe
+
+    def retire_existing_shoe(self, nickname, retire_date):
+        self.query_runner.retire_existing_shoe(nickname, retire_date)

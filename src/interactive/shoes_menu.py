@@ -7,7 +7,8 @@ class ShoesMenu(InteractiveMenu):
         self.manager = manager
         self.sub_menu_modules = [
             AddShoeMenu(manager),
-            ShowShoesMenu(manager)
+            ShowShoesMenu(manager),
+            RetireShoeMenu(manager)
         ]
 
     def title(self):
@@ -34,9 +35,24 @@ class AddShoeMenu(InteractiveMenu):
             print("Aborting")
 
 class ShowShoesMenu(InteractiveMenu):
-
     def title(self):
         return "Show"
-
     def main_loop(self):
         self.manager.print_all_shoes()
+
+class RetireShoeMenu(InteractiveMenu):
+    def title(self):
+        return "Retire"
+    def main_loop(self):
+        print("What is the nickname of the shoe to be retired?")
+        nickname = self.fancy_input()
+        existing_shoe = self.manager.get_shoe_with_nickname(nickname)
+        if existing_shoe is None:
+            print("No shoe with name '%s' found")
+        else:
+            print("What date should the shoe be retired (YYYY-MM-DD)?")
+            answer = self.fancy_input()
+            self.manager.retire_existing_shoe(nickname, answer)
+            print("Retired shoe!")
+
+

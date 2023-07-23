@@ -14,6 +14,7 @@
 
 - hold the routes in memory, there are several places that i look them up when the function is called
 - update the example config, and the real configs locally
+- update the README for how to run
 - unfortunately, it looks like for my modules to import correctly, i need to have 'src' one level down, at least if i am going to continue with that pattern
 
 -----------------------------------------------------------------------------

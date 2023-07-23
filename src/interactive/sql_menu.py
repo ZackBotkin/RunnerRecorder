@@ -11,7 +11,8 @@ class SqlMenu(InteractiveMenu):
             MigrateData(manager),
             MigrateToNewDb(manager),
             ReadFromNewDb(manager),
-            DeleteSql(manager)
+            DeleteSql(manager),
+            DropSql(manager)
         ]
     def title(self):
         return "Sql"
@@ -82,10 +83,11 @@ class RoutesCount(InteractiveMenu):
 
 class DeleteSql(InteractiveMenu):
     def __init__(self, manager):
-        self.manager = manager
+        self.manager = manager  ## TODO : call "super" on this
         self.sub_menu_modules = [
             DeleteRuns(manager),
-            DeleteRoutes(manager)
+            DeleteRoutes(manager),
+            DeleteShoes(manager)
         ]
     def title(self):
         return "Delete"
@@ -109,5 +111,25 @@ class DeleteRoutes(InteractiveMenu):
         self.manager.delete_routes()
         self.manager.reload()
 
+class DeleteShoes(InteractiveMenu):
+    def title(self):
+        return "Shoes"
+    def main_loop(self):
+        self.manager.delete_shoes()
+        self.manager.reload()
 
+class DropSql(InteractiveMenu):
+    def __init__(self, manager):
+        self.manager = manager
+        self.sub_menu_modules = [
+            DropShoes(manager)
+        ]
+    def title(self):
+        return "Drop"
+
+class DropShoes(InteractiveMenu):
+    def title(self):
+        return "Shoes"
+    def main_loop(self):
+        self.manager.drop_shoes_table()
 
