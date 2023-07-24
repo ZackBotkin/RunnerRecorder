@@ -1,13 +1,9 @@
-<bugs>
-
-- whitespace before and after commands should be ignored
-- "routes" page has way too many decimal places
+G<bugs>
 
 <features>
 
 <refactors>
 
-- hold the routes in memory, there are several places that i look them up when the function is called
 - update the example config, and the real configs locally
 - update the README for how to run
 
@@ -22,6 +18,8 @@
 - in the edit menu, there needs to be a "back/exit" button, right now it just accepts whatever input it is given as a date and mostly fails
 - when deleting runs, it still says "deleted <full number of rows> rows" instead of the number it is actually deleting
 - should cut the % in "all" down to 2 decimal places and then display "%"
+- "routes" page has way too many decimal places
+- whitespace before and after commands should be ignored
 
 <done features>
 
@@ -44,6 +42,7 @@
 - the graph functions should live in their own class
 - we no longer really use fancy_print, and fancy_input could be re-worked
 - unfortunately, it looks like for my modules to import correctly, i need to have 'src' one level down, at least if i am going to continue with that pattern
+- hold the routes in memory, there are several places that i look them up when the function is called
 
 <abandoned>
 

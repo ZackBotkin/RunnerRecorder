@@ -78,7 +78,6 @@ class RunnerReader(object):
         return True
 
     def print_all_routes(self):
-        routes = self.get_routes()
 
         ## TODO get this working for real
         headers = ('Route Name', 'Distance', 'Description', 'Total Miles', 'Total Runs')
@@ -101,7 +100,7 @@ class RunnerReader(object):
                 by_route_total_runs[route_name] += 1
 
         import pandas as pd
-        for route in routes:
+        for route in self.routes:
             total_miles = 0
             total_runs = 0
             route_name = route['route_name']
