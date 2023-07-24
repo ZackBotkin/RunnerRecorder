@@ -1,51 +1,108 @@
-G<bugs>
 
-<features>
+#
+#   3.0 roadmap
+#
 
-<refactors>
 
-- update the example config, and the real configs locally
-- update the README for how to run
+BUGS
+- the historical graph doesnt stop on the same date as current year
+- should probably just not show the table if there is no data
+- the email backup of the database should have a subject other than "SUBJECT" and the name of the backup should include the date in it.
+- if not connnected to the internet, the database backup, and any other call to the internet will fail, handle this gracefully
+- validate all user input... dates are dates, numbers are numbers, that sort of thing
+- make sure user can't drop tables or dumb shit like that
 
------------------------------------------------------------------------------
+REFACTOR
+- standardize the interactive menu so that i can use it in other projects
+- all tables should have datatypes
+- all inserts to tables should not rely on position alone in order to determine which values are being inserted
+- each row in the table should have a unique id
+    -- this would make it easier to expand to multiple users
+- the confirmation of data entry could look/work a little nicer than it does
+    -- this could live in it's own class and could exist as a standard way to confirm user input
+- put the sql statements into their own files and import them somehow.. i feel like that would be somewhat easier to maintain/edit.. at least for the creation of tables
+- stats should display in a more visually pleasing way
+- actually, all menus should display in a more pleasing way, maybe battlemenu from pokemon inspiration, would be cool/overkill if this was customizable
+- call "super" in every place that we are manually binding the manager to the subclass
+- rename "runner" to "context manager" or "manager" or something like that
 
-<done bugs>
+FEATURES
+- some sort of tree view so that I know where in the menu that i am
+- monthly stats
+    -- total miles this month
+    -- total runs this month
+    -- avg miles per month
+    -- avg runs per month
+- it would be cool if i type "graph bar" for example, it would immediately go into that menu, or like run defaults grand
+- some sort of tab complete, it would be great if i could standardize that in the interactive menu
 
-- when you enter a route name that the runner does not recognize, then it will immediately say "are you done recording runs" when i would like it to ask for the correct name of the run, or ask the user to enter a new run (or i guess just exit)
-    -- this was a freebee fix through one of the refactors
-- when you are in the routes menu, and do "show", once done it immediately takes you back to the main menu, should take you back to routes menu
-    -- I also got this one for free through the refactor
-- in the edit menu, there needs to be a "back/exit" button, right now it just accepts whatever input it is given as a date and mostly fails
-- when deleting runs, it still says "deleted <full number of rows> rows" instead of the number it is actually deleting
-- should cut the % in "all" down to 2 decimal places and then display "%"
-- "routes" page has way too many decimal places
-- whitespace before and after commands should be ignored
+- the top level should be
 
-<done features>
+    "Runs", "Stats", "Routes", "Shoes", "Graphs"
+    "Config", "Backup", "About", "Back", "Exit"
 
-- i want to be able to graph how many of each type (lake, grand, etc) run that i've done, both bar graph and pie graph
-- adding a new route should be a lot easier, no manually editing configs
-- editing a run should be a lot easier than it is, no going in and manually updating the sql
-- port the data from 2022 into the database
-    -- once this is done i should be able to kill off the filesystem code entirely
-- it would be nice to have the historical graph on the same window as the current year
-- hovering over the bar on the graph should reveal the comment for that run
-- maybe some automated export of the database
-- some way to indicate how many miles per pair of shoe
-- it would be cool to be able to visually distinguish runs that occur on the same day as separate runs (in the graph)
-- "routes" should be ordered by number of times run, and then also display the miles
+    where runs expands into add/edit/show/delete/import
+    stats expands into goals/yearly/monthly/weekly
+        -- goals shows progress towards this year's goal
+        -- yearly expands into the years
+        -- monthly expands into the months
+        -- weekly expands into the weeks
+    routes expands to add/edit/show/delete
+    shoes expands to add/show/retire/delete
+    config expands to config menu
+        -- can edit goal, stretch goal, backup email...
+        -- these values would live in a database and override the config file
+    backup expands to backup menu filesystem/email
+        -- email --> sqlite, jsonfolder, csvfolder
+        -- filesystem --> sqlite, jsonfolder, csvfolder
+    about shows version info
+        -- this will just come from a file
+    slight reworking basically
 
-<done refactors>
+- a script/command that populates the test database for various days
+    -- prod --> test copy
 
-- big refactor to the interactive code.. a lot more pluggable/modular
-- split the reader writer up into different types (db, filesystem, etc)
-- the graph functions should live in their own class
-- we no longer really use fancy_print, and fancy_input could be re-worked
-- unfortunately, it looks like for my modules to import correctly, i need to have 'src' one level down, at least if i am going to continue with that pattern
-- hold the routes in memory, there are several places that i look them up when the function is called
+- should have ability to record pain/difficulty after run scale of 1-10
+    -- this should then color coat the graph
 
-<abandoned>
+- i want the ability to do "historical" for every type of graph
 
-- some way to adjust/recalculate the stats dynamically (ie: if my goal was X, my avgs would change by Y)
-    -- im gonna push this to 3.0 with the redesign of the stats menu
-    -- this will be accomplished through the stretch goal
+- historical should allow a selector for which year (at first this will be redundant)
+
+- graphs should also have a menu similar to the other stuff, right now it goes back to the main menu after selecting a graph
+
+- there should be more "acceptable" answers for each choice
+    -- ie: graphs --> (graph, graphs, chart, charts)
+    --     all --> (all, list)
+    --     stats --> (stat, stats, data, etc)
+    -- this could be customizable via the configs
+
+- should be able to pip install the module and run it very simply, no more downloading the repo and setting the python path... i don't know what's involved in this or if it works like i'm thinking..
+    -- if i recall, there's a way to run python modules
+    -- "python -m <module name>" something like that
+    -- that would be an improvement over needing to have all of the code set up locally
+
+- strech goals in the stats menu
+
+- editable configuration, there should be a configuration database that overrides certain values from the config file
+
+- saveable temperature for runs, heavily optional as i feel like this could get annoying to need to look up
+
+- able to save images somehow of each route
+
+- stats "as of" a certain day
+
+- data should be able to back up every "X" days
+
+- for bar graphs that dont have a date on the x axis, sort those from biggest to smallest
+
+- put the day of the week as a column inside "all"
+
+- edit runs when more than one run on a day
+
+- approximate time of run, again heavily optional and probably save as military time?
+
+- backup should be a main menu option as well
+
+- import runs
+    -- csv/json
