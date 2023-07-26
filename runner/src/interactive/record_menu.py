@@ -2,8 +2,8 @@ from interactive_menu.src.interactive_menu import InteractiveMenu
 
 class RecordMenu(InteractiveMenu):
 
-    def __init__(self, manager):
-        self.manager = manager
+    def __init__(self, manager, path=[]):
+        super().__init__(manager, path)
         self.sub_menu_modules = [
             DefaultRunsMenu(manager),
             NewRunMenu(manager)

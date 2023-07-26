@@ -12,16 +12,19 @@ from runner.src.interactive.shoes_menu import ShoesMenu
 
 class MainMenu(InteractiveMenu):
 
-    def __init__(self, manager):
-        self.manager = manager
+    def __init__(self, manager, path=[]):
+        super().__init__(manager, path)
         self.sub_menu_modules = [
-            RecordMenu(manager),
-            EditMenu(manager),
-            AllMenu(manager),
-            StatsMenu(manager),
-            GraphMenu(manager),
-            RoutesMenu(manager),
-            ShoesMenu(manager)
+            RecordMenu(manager, self.path),
+            EditMenu(manager, self.path),
+            AllMenu(manager, self.path),
+            StatsMenu(manager, self.path),
+            GraphMenu(manager, self.path),
+            RoutesMenu(manager, self.path),
+            ShoesMenu(manager, self.path)
         ] 
         if manager.config.get('enable_direct_sql'):
             self.sub_menu_modules.append(SqlMenu(manager))
+
+    def title(self):
+        return "Main"

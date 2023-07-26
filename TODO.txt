@@ -13,7 +13,6 @@ BUGS
 - make sure user can't drop tables or dumb shit like that
 
 REFACTOR
-- standardize the interactive menu so that i can use it in other projects
 - all tables should have datatypes
 - all inserts to tables should not rely on position alone in order to determine which values are being inserted
 - each row in the table should have a unique id
@@ -27,7 +26,6 @@ REFACTOR
 - rename "runner" to "context manager" or "manager" or something like that
 
 FEATURES
-- some sort of tree view so that I know where in the menu that i am
 - monthly stats
     -- total miles this month
     -- total runs this month
@@ -106,3 +104,13 @@ FEATURES
 
 - import runs
     -- csv/json
+
+
+
+<done bugs>
+
+<done refactors>
+- standardize the interactive menu so that i can use it in other projects
+
+<done features>
+- some sort of tree view so that I know where in the menu that i am
