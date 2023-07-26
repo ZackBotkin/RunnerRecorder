@@ -1,8 +1,9 @@
 import json
+
+from interactive_menu.src.interactive_menu import InteractiveMenu
 from runner.src.interactive.all_menu import AllMenu
 from runner.src.interactive.edit_menu import EditMenu
 from runner.src.interactive.graph_menu import GraphMenu
-from runner.src.interactive.interactive_menu import InteractiveMenu
 from runner.src.interactive.record_menu import RecordMenu
 from runner.src.interactive.routes_menu import RoutesMenu
 from runner.src.interactive.sql_menu import SqlMenu

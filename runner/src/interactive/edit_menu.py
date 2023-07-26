@@ -1,5 +1,4 @@
-
-from runner.src.interactive.interactive_menu import InteractiveMenu
+from interactive_menu.src.interactive_menu import InteractiveMenu
 
 class EditMenu(InteractiveMenu):
 
