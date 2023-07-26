@@ -21,8 +21,6 @@ REFACTOR
     -- this could live in it's own class and could exist as a standard way to confirm user input
 - put the sql statements into their own files and import them somehow.. i feel like that would be somewhat easier to maintain/edit.. at least for the creation of tables
 - stats should display in a more visually pleasing way
-- actually, all menus should display in a more pleasing way, maybe battlemenu from pokemon inspiration, would be cool/overkill if this was customizable
-- call "super" in every place that we are manually binding the manager to the subclass
 - rename "runner" to "context manager" or "manager" or something like that
 
 FEATURES
@@ -111,6 +109,8 @@ FEATURES
 
 <done refactors>
 - standardize the interactive menu so that i can use it in other projects
+- call "super" in every place that we are manually binding the manager to the subclass
+- actually, all menus should display in a more pleasing way, maybe battlemenu from pokemon inspiration, would be cool/overkill if this was customizable
 
 <done features>
 - some sort of tree view so that I know where in the menu that i am

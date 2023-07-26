@@ -1,17 +1,17 @@
 from interactive_menu.src.interactive_menu import InteractiveMenu
 
 class SqlMenu(InteractiveMenu):
-    def __init__(self, manager):
-        self.manager = manager
+    def __init__(self, manager, path=[]):
+        super().__init__(manager, path)
         self.sub_menu_modules = [
-            ReadData(manager),
-            InsertRoutes(manager),
-            Count(manager),
-            MigrateData(manager),
-            MigrateToNewDb(manager),
-            ReadFromNewDb(manager),
-            DeleteSql(manager),
-            DropSql(manager)
+            ReadData(manager, self.path),
+            InsertRoutes(manager, self.path),
+            Count(manager, self.path),
+            MigrateData(manager, self.path),
+            MigrateToNewDb(manager, self.path),
+            ReadFromNewDb(manager, self.path),
+            DeleteSql(manager, self.path),
+            DropSql(manager, self.path)
         ]
     def title(self):
         return "Sql"
@@ -40,11 +40,11 @@ class InsertRoutes(InteractiveMenu):
         self.manager.insert_default_routes()
 
 class ReadData(InteractiveMenu):
-    def __init__(self, manager):
-        self.manager = manager
+    def __init__(self, manager, path=[]):
+        super().__init__(manager, path)
         self.sub_menu_modules = [
-            ReadRuns(manager),
-            ReadRoutes(manager)
+            ReadRuns(manager, self.path),
+            ReadRoutes(manager, self.path)
         ]
     def title(self):
         return "Read"
@@ -60,11 +60,11 @@ class ReadRoutes(InteractiveMenu):
         self.manager.read_routes()
 
 class Count(InteractiveMenu):
-    def __init__(self, manager):
-        self.manager = manager
+    def __init__(self, manager, path=[]):
+        super().__init__(manager, path)
         self.sub_menu_modules = [
-            RunsCount(manager),
-            RoutesCount(manager)
+            RunsCount(manager, self.path),
+            RoutesCount(manager, self.path)
         ]
     def title(self):
         return "Count"
@@ -81,12 +81,12 @@ class RoutesCount(InteractiveMenu):
         self.manager.routes_count()
 
 class DeleteSql(InteractiveMenu):
-    def __init__(self, manager):
-        self.manager = manager  ## TODO : call "super" on this
+    def __init__(self, manager, path=[]):
+        super().__init__(manager, path)
         self.sub_menu_modules = [
-            DeleteRuns(manager),
-            DeleteRoutes(manager),
-            DeleteShoes(manager)
+            DeleteRuns(manager, self.path),
+            DeleteRoutes(manager, self.path),
+            DeleteShoes(manager, self.path)
         ]
     def title(self):
         return "Delete"
@@ -118,10 +118,10 @@ class DeleteShoes(InteractiveMenu):
         self.manager.reload()
 
 class DropSql(InteractiveMenu):
-    def __init__(self, manager):
-        self.manager = manager
+    def __init__(self, manager, path=[]):
+        super().__init__(manager, path)
         self.sub_menu_modules = [
-            DropShoes(manager)
+            DropShoes(manager, self.path)
         ]
     def title(self):
         return "Drop"
