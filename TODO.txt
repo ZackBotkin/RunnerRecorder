@@ -13,8 +13,6 @@ BUGS
 - make sure user can't drop tables or dumb shit like that
 
 REFACTOR
-- all tables should have datatypes
-- all inserts to tables should not rely on position alone in order to determine which values are being inserted
 - each row in the table should have a unique id
     -- this would make it easier to expand to multiple users
 - the confirmation of data entry could look/work a little nicer than it does
@@ -111,6 +109,8 @@ FEATURES
 - call "super" in every place that we are manually binding the manager to the subclass
 - actually, all menus should display in a more pleasing way, maybe battlemenu from pokemon inspiration, would be cool/overkill if this was customizable
 - rename "runner" to "context manager" or "manager" or something like that
+- all tables should have datatypes
+- all inserts to tables should not rely on position alone in order to determine which values are being inserted
 
 <done features>
 - some sort of tree view so that I know where in the menu that i am
