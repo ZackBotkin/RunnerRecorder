@@ -9,6 +9,7 @@ from runner.src.interactive.routes_menu import RoutesMenu
 from runner.src.interactive.sql_menu import SqlMenu
 from runner.src.interactive.stats_menu import StatsMenu
 from runner.src.interactive.shoes_menu import ShoesMenu
+from runner.src.interactive.runs_menu import RunsMenu
 
 class MainMenu(InteractiveMenu):
 
@@ -21,10 +22,11 @@ class MainMenu(InteractiveMenu):
             StatsMenu(manager, self.path),
             GraphMenu(manager, self.path),
             RoutesMenu(manager, self.path),
-            ShoesMenu(manager, self.path)
+            ShoesMenu(manager, self.path),
+            RunsMenu(manager, self.path)
         ] 
         if manager.config.get('enable_direct_sql'):
             self.sub_menu_modules.append(SqlMenu(manager))
 
     def title(self):
-        return "Main"
+        return "RunnerReader"
