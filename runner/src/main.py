@@ -1,6 +1,6 @@
 import argparse
 from datetime import datetime, timedelta
-from runner.src.manager import RunnerReader
+from runner.src.context_manager import ContextManager
 from runner.src.interactive.main_menu import MainMenu
 from runner.src.io.reader_writer import ReaderWriter
 from runner.src.io.db_reader_writer import DbReaderWriter
@@ -46,18 +46,18 @@ def main():
         miles_map = QueryRunner(configs).miles_map()
         output_sources.append(FileSystemReaderWriter(configs, miles_map))
 
-    reader = RunnerReader(configs, input_source, output_sources)
+    context_manager = ContextManager(configs, input_source, output_sources)
 
     if args.print_all_runs:
-        reader.print_all_runs()
+        context_manager.print_all_runs()
     elif args.graph_all_runs:
-        reader.graph_all_runs()
+        context_manager.graph_all_runs()
     elif args.line_graph_all_runs:
-        reader.line_graph_all_runs()
+        context_manager.line_graph_all_runs()
     elif args.print_stats:
-        reader.print_stats()
+        context_manager.print_stats()
     elif args.interactive:
-        interactive = MainMenu(reader)
+        interactive = MainMenu(context_manager)
         interactive.main_loop()
         if configs.get("never_back_up_database") == True:
             answer = "no"
@@ -68,7 +68,7 @@ def main():
             answer = interactive.fancy_input()
 
         if answer in ["yes", "Yes", "ok"]:
-            reader.back_up_database()
+            context_manager.back_up_database()
     else:
         total = reader.get_total()
         print("%f miles run" % total)

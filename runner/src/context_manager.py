@@ -8,7 +8,7 @@ from runner.src.graph.grapher import Grapher
 #   TODO : this should probably now be re-named manager
 #
 
-class RunnerReader(object):
+class ContextManager(object):
 
     def __init__(self, configs, input_source, output_sources):
         self.config = configs
