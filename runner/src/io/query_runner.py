@@ -62,7 +62,7 @@ class QueryRunner(object):
             sql_str = "SELECT * FROM runs WHERE date = '%s'" % run_date
             return self.fetch_sql(sql_str)
         else:
-            return self.get_runs_for_year(2023)
+            return self.get_runs_for_year(2024)
 
     def get_all_runs(self):
         return self.fetch_sql("SELECT * FROM runs")
