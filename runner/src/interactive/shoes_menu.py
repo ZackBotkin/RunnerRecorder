@@ -1,3 +1,4 @@
+from datetime import datetime
 from interactive_menu.src.interactive_menu import InteractiveMenu
 
 class ShoesMenu(InteractiveMenu):
@@ -20,18 +21,45 @@ class AddShoeMenu(InteractiveMenu):
         return "Add"
 
     def main_loop(self):
-        print("What is the nickname for the shoe")
-        new_shoe_nickname = self.fancy_input()
-        print("What is the start date for this shoe? (YYYY-MM-DD)")
-        new_shoe_start_date = self.fancy_input()
-        print("What is the brand of shoe?")
-        new_shoe_brand = self.fancy_input()
-        print("%s -- %s -- %s... correct?" % (new_shoe_nickname, new_shoe_start_date, new_shoe_brand) )
-        answer = self.fancy_input()
-        if answer in ["yes", "Yes", "ok"]:
-            self.manager.add_shoe(new_shoe_nickname, new_shoe_start_date, new_shoe_brand)
-        else:
-            print("Aborting")
+
+        form_results = self.interactive_form(
+            [
+                {
+                    "question": "What is the nickname for the shoe?",
+                    "expected_response_type": "VARCHAR",
+                    "return_as": "new_shoe_nickname",
+                    "default": "",
+                    "allow_empty": False
+                },
+                {
+                    "question": "What is the start date (YYYY-MM-DD) for this shoe? Hit enter for today",
+                    "expected_response_type": "YYYYMMDD_Date",
+                    "return_as": "new_shoe_start_date",
+                    "default": datetime.now().strftime("%Y-%m-%d"),
+                    "allow_empty": False
+                },
+                {
+                    "question": "What is the brand of shoe?",
+                    "expected_response_type": "VARCHAR",
+                    "return_as": "new_shoe_brand",
+                    "default": "",
+                    "allow_empty": False
+                }
+            ]
+        )
+        if form_results["user_accept"] != True:
+            print("Aborting!")
+            return
+        form_results.pop("user_accept")
+        for answer_key in form_results.keys():
+            if not form_results[answer_key]["valid"]:
+                print("%s is not a valid value! Aborting" % answer_key)
+                return
+
+        new_shoe_nickname = form_results["new_shoe_nickname"]["value"]
+        new_shoe_start_date = form_results["new_shoe_start_date"]["value"]
+        new_shoe_brand = form_results["new_shoe_brand"]["value"]
+        self.manager.add_shoe(new_shoe_nickname, new_shoe_start_date, new_shoe_brand)
 
 class ShowShoesMenu(InteractiveMenu):
     def title(self):

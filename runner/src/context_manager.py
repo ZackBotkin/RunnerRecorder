@@ -48,6 +48,11 @@ class ContextManager(object):
         return total
 
     def print_all_runs(self):
+
+        if len(self.runs_by_date) == 0:
+            print("No runs so far!")
+            return True
+
         total_so_far = 0
         goal = self.config.get("run_goal")
         all_data = [('Date', 'Miles Run', 'Route Name', 'Total So Far', 'Percentage Of Goal', 'Comment')]
@@ -319,6 +324,9 @@ class ContextManager(object):
 
     def print_all_shoes(self):
         shoes = self.input_source.get_shoes()
+        if len(shoes) == 0:
+            print("No shoes added!")
+            return True
         table = [('Nickname', 'Start Date', 'Brand', 'Retire Date', 'Miles Run')]
         for shoe in shoes:
             nickname = shoe[0]
