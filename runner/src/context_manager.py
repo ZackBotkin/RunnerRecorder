@@ -4,10 +4,6 @@ from runner.src.io.query_runner import QueryRunner
 from runner.src.io.filesystem_reader_writer import FileSystemReaderWriter
 from runner.src.graph.grapher import Grapher
 
-#
-#   TODO : this should probably now be re-named manager
-#
-
 class ContextManager(object):
 
     def __init__(self, configs, input_source, output_sources):
@@ -294,10 +290,12 @@ class ContextManager(object):
                 self.config.get("database_directory"),
                 self.config.get("database_name")
             )
+            subject_line = "Runs database as of %s" % datetime.now().strftime("%Y-%m-%d")
             emailer.send_file(
                 self.config.get("backups_email"),
                 self.config.get("backups_email"),
-                database_file_name
+                database_file_name,
+                subject=subject_line
             )
             print("Backup of database file sent to %s" % self.config.get("backups_email"))
         else:
