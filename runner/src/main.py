@@ -68,7 +68,10 @@ def main():
             answer = interactive.fancy_input()
 
         if answer in ["yes", "Yes", "ok"]:
-            context_manager.back_up_database()
+            try:
+                context_manager.back_up_database()
+            except Exception as ex:
+                print("Error backing up database. Please check internet connection and try again.")
     else:
         total = reader.get_total()
         print("%f miles run" % total)

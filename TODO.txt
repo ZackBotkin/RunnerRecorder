@@ -8,9 +8,8 @@ BUGS
 - the historical graph doesnt stop on the same date as current year
 - should probably just not show the table if there is no data
 - the email backup of the database should have a subject other than "SUBJECT" and the name of the backup should include the date in it.
-- if not connnected to the internet, the database backup, and any other call to the internet will fail, handle this gracefully
 - validate all user input... dates are dates, numbers are numbers, that sort of thing
-- make sure user can't drop tables or dumb shit like that
+    -- edit run input
 
 REFACTOR
 - each row in the table should have a unique id
@@ -103,6 +102,7 @@ FEATURES
 
 
 <done bugs>
+- if not connnected to the internet, the database backup, and any other call to the internet will fail, handle this gracefully
 
 <done refactors>
 - standardize the interactive menu so that i can use it in other projects
