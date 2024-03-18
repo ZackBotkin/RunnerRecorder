@@ -64,7 +64,7 @@ class DbReaderWriter(ReaderWriter):
 
     def get_legacy_runs(self):
         runs_by_date = {}
-        results = self.query_runner.get_runs_for_year(2022) ## TODO do not hardcode
+        results = self.query_runner.get_runs_for_year(2023) ## TODO do not hardcode
         for result in results:
             _date = result[0]
             _miles = result[1]

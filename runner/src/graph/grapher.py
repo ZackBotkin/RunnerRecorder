@@ -94,7 +94,9 @@ class Grapher(object):
             current_date = datetime.fromisoformat(date)
             current_month = current_date.month
             current_day = current_date.day
-            if current_month > max_month and current_day > max_day:
+            if current_month > max_month:
+                break
+            if current_month == max_month and current_day > max_day:
                 break
 
             total = 0

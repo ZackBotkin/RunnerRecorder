@@ -5,9 +5,7 @@
 
 
 BUGS
-- the historical graph doesnt stop on the same date as current year
 - should probably just not show the table if there is no data
-- the email backup of the database should have a subject other than "SUBJECT" and the name of the backup should include the date in it.
 - validate all user input... dates are dates, numbers are numbers, that sort of thing
     -- edit run input
 
@@ -103,6 +101,8 @@ FEATURES
 
 <done bugs>
 - if not connnected to the internet, the database backup, and any other call to the internet will fail, handle this gracefully
+- the email backup of the database should have a subject other than "SUBJECT" and the name of the backup should include the date in it.
+- the historical graph doesnt stop on the same date as current year
 
 <done refactors>
 - standardize the interactive menu so that i can use it in other projects
