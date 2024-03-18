@@ -8,6 +8,7 @@ BUGS
 - should probably just not show the table if there is no data
 - validate all user input... dates are dates, numbers are numbers, that sort of thing
     -- edit run input
+- miles per week appears to be broken in stats
 
 REFACTOR
 - each row in the table should have a unique id
