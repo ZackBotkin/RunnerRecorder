@@ -12,7 +12,6 @@ BUGS
 REFACTOR
 - each row in the table should have a unique id
     -- this would make it easier to expand to multiple users
-- the confirmation of data entry could look/work a little nicer than it does
     -- this could live in it's own class and could exist as a standard way to confirm user input
 - put the sql statements into their own files and import them somehow.. i feel like that would be somewhat easier to maintain/edit.. at least for the creation of tables
 - stats should display in a more visually pleasing way
@@ -111,6 +110,7 @@ FEATURES
 - rename "runner" to "context manager" or "manager" or something like that
 - all tables should have datatypes
 - all inserts to tables should not rely on position alone in order to determine which values are being inserted
+- the confirmation of data entry could look/work a little nicer than it does
 
 <done features>
 - some sort of tree view so that I know where in the menu that i am
