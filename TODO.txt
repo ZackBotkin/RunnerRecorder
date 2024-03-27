@@ -8,7 +8,6 @@ BUGS
 - should probably just not show the table if there is no data
 - validate all user input... dates are dates, numbers are numbers, that sort of thing
     -- edit run input
-- miles per week appears to be broken in stats
 - shoes milage appears to not carry over year to year
 
 REFACTOR
@@ -104,6 +103,8 @@ FEATURES
 - if not connnected to the internet, the database backup, and any other call to the internet will fail, handle this gracefully
 - the email backup of the database should have a subject other than "SUBJECT" and the name of the backup should include the date in it.
 - the historical graph doesnt stop on the same date as current year
+- miles per week appears to be broken in stats
+- days for leap year incorrect in stats
 
 <done refactors>
 - standardize the interactive menu so that i can use it in other projects

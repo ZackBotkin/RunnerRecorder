@@ -129,24 +129,33 @@ class ContextManager(object):
         return True
 
     def get_stats(self):
+
         total_runs = 0
         total_miles = 0
+
         goal_number = self.config.get("run_goal")
+        current_year = self.config.get("current_year")
+        days_in_current_year = self.config.get("days_in_current_year")
+
         day_of_year = datetime.now().timetuple().tm_yday
-        days_left = 365 - day_of_year
+        days_left = days_in_current_year - day_of_year
+
         for date, data_list in self.runs_by_date.items():
             for data in data_list:
                 total_runs += 1
                 total_miles += float(data["miles"])
+
         miles_remaining = goal_number - total_miles
         if total_runs == 0:
             avg_miles_per_run = 0
         else:
             avg_miles_per_run = total_miles/total_runs
+
         avg_runs_per_day = total_runs/day_of_year
         avg_miles_per_day = total_miles/day_of_year
         needed_avg = miles_remaining/days_left
-        miles_per_week = get_miles_per_week(self.runs_by_date, 2023) ## TODO : do not hardcode
+
+        miles_per_week = get_miles_per_week(self.runs_by_date, current_year)
         avg_miles_per_week = total_miles/len(miles_per_week)
         this_week = miles_per_week[-1]
 
@@ -154,7 +163,7 @@ class ContextManager(object):
             "day_of_year": day_of_year,
             "days_left": days_left,
             "goal": goal_number,
-            "on_pace_for": avg_miles_per_day * 365, ## TODO leap year bug
+            "on_pace_for": avg_miles_per_day * days_in_current_year,
             "total_runs": total_runs,
             "total_miles": total_miles,
             "miles_remaining": miles_remaining,
@@ -184,7 +193,6 @@ class ContextManager(object):
         print("\tMiles this week: %f\n" % stats["miles_this_week"])
         print("\n")
         return True
-
 
     #
     #   sql methods for troubleshooting only
