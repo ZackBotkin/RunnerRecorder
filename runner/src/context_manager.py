@@ -279,7 +279,8 @@ class ContextManager(object):
         Grapher(self.runs_by_date, self.legacy_runs_by_date).historical_graph_all_runs()
 
     def weekly_graph(self):
-        Grapher(self.runs_by_date, self.legacy_runs_by_date).weekly_graph()
+        current_year = self.config.get("current_year")
+        Grapher(self.runs_by_date, self.legacy_runs_by_date).weekly_graph(current_year)
 
     def routes_graph(self):
         Grapher(self.runs_by_date, self.legacy_runs_by_date).routes_graph()

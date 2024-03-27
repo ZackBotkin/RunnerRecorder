@@ -115,12 +115,12 @@ class Grapher(object):
 
         return True
 
-    def weekly_graph(self):
+    def weekly_graph(self, current_year):
         x_vals = []
         y_vals = []
         total_miles = 0
 
-        miles_per_week = get_miles_per_week(self.runs_by_date, 2023) ## TODO do not hardcode
+        miles_per_week = get_miles_per_week(self.runs_by_date, current_year)
         for week in miles_per_week:
             x_vals.append(week.start_date)
             y_vals.append(week.total_miles)

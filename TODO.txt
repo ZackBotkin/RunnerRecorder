@@ -14,8 +14,6 @@ REFACTOR
 - each row in the table should have a unique id
     -- this would make it easier to expand to multiple users
     -- this could live in it's own class and could exist as a standard way to confirm user input
-- put the sql statements into their own files and import them somehow.. i feel like that would be somewhat easier to maintain/edit.. at least for the creation of tables
-- stats should display in a more visually pleasing way
 
 FEATURES
 - monthly stats
@@ -105,6 +103,7 @@ FEATURES
 - the historical graph doesnt stop on the same date as current year
 - miles per week appears to be broken in stats
 - days for leap year incorrect in stats
+- weekly graph broken for 2024
 
 <done refactors>
 - standardize the interactive menu so that i can use it in other projects
