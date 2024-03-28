@@ -112,3 +112,7 @@ class DbReaderWriter(ReaderWriter):
 
     def retire_existing_shoe(self, nickname, retire_date):
         self.query_runner.retire_existing_shoe(nickname, retire_date)
+
+    def get_runs_in_date_range(self, start_date, end_date):
+        return self.query_runner.get_runs_in_date_range(start_date, end_date)
+

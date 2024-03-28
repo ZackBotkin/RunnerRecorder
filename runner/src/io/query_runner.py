@@ -119,3 +119,7 @@ class QueryRunner(object):
     def retire_existing_shoe(self, nickname, retire_date):
         sql_str = "UPDATE shoes SET end_date = '%s' WHERE shoe_name = '%s'" % (retire_date, nickname)
         self.run_sql(sql_str)
+
+    def get_runs_in_date_range(self, start_date, end_date):
+        sql_str = "SELECT * FROM runs WHERE date >= '%s' AND date <= '%s'" % (start_date, end_date)
+        return self.fetch_sql(sql_str)

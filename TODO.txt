@@ -8,7 +8,6 @@ BUGS
 - should probably just not show the table if there is no data
 - validate all user input... dates are dates, numbers are numbers, that sort of thing
     -- edit run input
-- shoes milage appears to not carry over year to year
 
 REFACTOR
 - each row in the table should have a unique id
@@ -104,6 +103,7 @@ FEATURES
 - miles per week appears to be broken in stats
 - days for leap year incorrect in stats
 - weekly graph broken for 2024
+- shoes milage appears to not carry over year to year
 
 <done refactors>
 - standardize the interactive menu so that i can use it in other projects

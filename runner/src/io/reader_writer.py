@@ -35,4 +35,5 @@ class ReaderWriter(object):
     def get_shoe_with_nickname(self, nickname):
         raise Exception("Not implemented")
 
-
+    def get_runs_in_date_range(self, start_date, end_date):
+        raise Exception("Not implemented")

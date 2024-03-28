@@ -342,14 +342,23 @@ class ContextManager(object):
             since_date = shoe[1]
             brand = shoe[2]
             retire_date = shoe[3]
-            miles_in_shoe = get_miles_in_date_range_inclusive(self.runs_by_date, since_date)
+            end_date = shoe[3]
+            if retire_date is None:
+                end_date = datetime.today().strftime("%Y-%m-%d")
+
+            all_runs_in_range = self.input_source.get_runs_in_date_range(since_date, retire_date)
+            total_miles_for_range = 0
+            for run in all_runs_in_range:
+                miles = run[1]
+                total_miles_for_range += miles
+
             table.append(
                 (
                     nickname,
                     since_date,
                     brand,
                     retire_date,
-                    miles_in_shoe
+                    total_miles_for_range
                 )
             )
         import pandas as pd
