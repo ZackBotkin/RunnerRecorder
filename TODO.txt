@@ -23,29 +23,6 @@ FEATURES
 - it would be cool if i type "graph bar" for example, it would immediately go into that menu, or like run defaults grand
 - some sort of tab complete, it would be great if i could standardize that in the interactive menu
 
-- the top level should be
-
-    "Runs", "Stats", "Routes", "Shoes", "Graphs"
-    "Config", "Backup", "About", "Back", "Exit"
-
-    where runs expands into add/edit/show/delete/import
-    stats expands into goals/yearly/monthly/weekly
-        -- goals shows progress towards this year's goal
-        -- yearly expands into the years
-        -- monthly expands into the months
-        -- weekly expands into the weeks
-    routes expands to add/edit/show/delete
-    shoes expands to add/show/retire/delete
-    config expands to config menu
-        -- can edit goal, stretch goal, backup email...
-        -- these values would live in a database and override the config file
-    backup expands to backup menu filesystem/email
-        -- email --> sqlite, jsonfolder, csvfolder
-        -- filesystem --> sqlite, jsonfolder, csvfolder
-    about shows version info
-        -- this will just come from a file
-    slight reworking basically
-
 - a script/command that populates the test database for various days
     -- prod --> test copy
 
@@ -83,8 +60,6 @@ FEATURES
 
 - for bar graphs that dont have a date on the x axis, sort those from biggest to smallest
 
-- put the day of the week as a column inside "all"
-
 - edit runs when more than one run on a day
 
 - approximate time of run, again heavily optional and probably save as military time?
@@ -116,3 +91,26 @@ FEATURES
 
 <done features>
 - some sort of tree view so that I know where in the menu that i am
+- the top level should be
+
+    "Runs", "Stats", "Routes", "Shoes", "Graphs"
+    "Config", "Backup", "About", "Back", "Exit"
+
+    where runs expands into add/edit/show/delete/import
+    stats expands into goals/yearly/monthly/weekly
+        -- goals shows progress towards this year's goal
+        -- yearly expands into the years
+        -- monthly expands into the months
+        -- weekly expands into the weeks
+    routes expands to add/edit/show/delete
+    shoes expands to add/show/retire/delete
+    config expands to config menu
+        -- can edit goal, stretch goal, backup email...
+        -- these values would live in a database and override the config file
+    backup expands to backup menu filesystem/email
+        -- email --> sqlite, jsonfolder, csvfolder
+        -- filesystem --> sqlite, jsonfolder, csvfolder
+    about shows version info
+        -- this will just come from a file
+    slight reworking basically
+- put the day of the week as a column inside "all"

@@ -55,9 +55,10 @@ class ContextManager(object):
 
         total_so_far = 0
         goal = self.config.get("run_goal")
-        all_data = [('Date', 'Miles Run', 'Route Name', 'Total So Far', 'Percentage Of Goal', 'Comment')]
+        all_data = [('Date', 'Day Of Week', 'Miles Run', 'Route Name', 'Total So Far', 'Percentage Of Goal', 'Comment')]
         import pandas as pd
         for date, data_list in self.runs_by_date.items():
+            day_of_week = datetime.strptime(date, "%Y-%m-%d").strftime("%A")
             for data in data_list:
                 total_so_far += float(data["miles"])
                 percentage_of_goal = "{:.2f}".format((total_so_far/goal) * 100)
@@ -67,6 +68,7 @@ class ContextManager(object):
                 all_data.append(
                     (
                         date,
+                        day_of_week,
                         data['miles'],
                         data['route_name'],
                         total_so_far,
