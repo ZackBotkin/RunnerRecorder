@@ -88,6 +88,7 @@ FEATURES
 - all tables should have datatypes
 - all inserts to tables should not rely on position alone in order to determine which values are being inserted
 - the confirmation of data entry could look/work a little nicer than it does
+- inherit from common code for query runner
 
 <done features>
 - some sort of tree view so that I know where in the menu that i am

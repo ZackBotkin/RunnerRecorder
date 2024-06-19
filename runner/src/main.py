@@ -6,7 +6,7 @@ from runner.src.io.reader_writer import ReaderWriter
 from runner.src.io.db_reader_writer import DbReaderWriter
 from runner.src.io.filesystem_reader_writer import FileSystemReaderWriter
 from runner.src.io.query_runner import QueryRunner
-from runner.config.config import Configs
+from config_reader.src.config_reader import Configs
 
 
 def main():
