@@ -40,12 +40,13 @@ class QueryRunner(SqlLiteQueryRunner):
         self.run_sql('DROP TABLE shoes')
 
     ## TODO : the 2023 is hardcoded
+    ## TODO : the 2024 is hardcoded
     def get_runs(self, run_date=None):
         if run_date is not None:
             sql_str = "SELECT * FROM runs WHERE date = '%s'" % run_date
             return self.fetch_sql(sql_str)
         else:
-            return self.get_runs_for_year(2024)
+            return self.get_runs_for_year(2025)
 
     def get_all_runs(self):
         return self.fetch_sql("SELECT * FROM runs")
